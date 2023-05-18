@@ -1,12 +1,12 @@
 
-import 'package:ammommyappgp/presentation/dueDate/PregnancyDueDate.dart';
+import 'package:ammommyappgp/screens/dueDate/PregnancyDueDate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ammommyappgp/presentation/welcome_screen/welcome_screen.dart';
+import 'package:ammommyappgp/screens/welcome_screen/welcome_screen.dart';
 
 import 'package:ammommyappgp/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ammommyappgp/presentation/authentecation/auth.dart';
+import 'package:ammommyappgp/screens/authentecation/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

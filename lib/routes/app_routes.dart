@@ -1,11 +1,11 @@
-import 'package:ammommyappgp/presentation/authentecation/auth.dart';
-import 'package:ammommyappgp/presentation/dueDate/PregnancyDueDate.dart';
-import 'package:ammommyappgp/presentation/signUp/signUp22.dart';
+import 'package:ammommyappgp/screens/authentecation/auth.dart';
+import 'package:ammommyappgp/screens/dueDate/PregnancyDueDate.dart';
+import 'package:ammommyappgp/screens/signUp/signUp22.dart';
 import 'package:flutter/material.dart';
-import 'package:ammommyappgp/presentation/sign_in_screen/sign_in_screen.dart';
-import 'package:ammommyappgp/presentation/welcome_screen/welcome_screen.dart';
-import 'package:ammommyappgp/presentation/forgot_pass_screen/forgot_pass_screen.dart';
-import 'package:ammommyappgp/presentation/homepage/Homepage.dart';
+import 'package:ammommyappgp/screens/sign_in_screen/sign_in_screen.dart';
+import 'package:ammommyappgp/screens/welcome_screen/welcome_screen.dart';
+import 'package:ammommyappgp/screens/forgot_pass_screen/forgot_pass_screen.dart';
+import 'package:ammommyappgp/screens/homepage/Homepage.dart';
 
 
 

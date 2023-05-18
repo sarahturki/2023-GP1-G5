@@ -12,7 +12,7 @@ import '../../core/utils/image_constant.dart';
 import '../../core/utils/size_utils.dart';
 import '../../theme/app_decoration.dart';
 import '../../theme/app_style.dart';
-import '../../widgets/custom_image_view.dart';
+import '../../designImageText/custom_image_view.dart';
 
 
 
@@ -1007,6 +1007,10 @@ try { // try
       
 
   }    on FirebaseAuthException catch (e){ 
+
+    
+  setState(() { _isLoading = false; });
+        print(e);
       if (e.code == 'weak-password') { ScaffoldMessenger.of(context).showSnackBar( SnackBar
       ( content: Text('كلمة المرور ضعيفة '
       
@@ -1047,10 +1051,23 @@ ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('صيغة ا
         
         } catch (e) 
         { 
-          
+          print(e) ; 
+         } 
+        finally { setState(() { _isLoading = false; }); } }
+        
+         }
+         ////////////
+         }}}}} }
+
+
+         
+
+              
+                
+  setState(() { _isLoading = false; });
      
 if (_formKey.currentState!.validate() == true){ 
-if (formatedDuedate!= "") {
+if (formatedDuedate== "") {
 ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: 
       Text('الرجاء ادخال التاريخ بشكل صحيح' 
       , 
@@ -1176,16 +1193,9 @@ if(ispassworhas1num ==false){
          
          }
 
-  
           
-          print(e);
+    
         
-         } 
-        finally { setState(() { _isLoading = false; }); } }
-        
-         }
-         ////////////
-         }}}}} }
 
 
 
