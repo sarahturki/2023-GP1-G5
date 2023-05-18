@@ -16,7 +16,7 @@
 
 
 
-### introduction 
+## introduction 
 
 We believe that every mother should feel comfortable in her
 pregnancy journey and be Reassured about herself and the baby's health. At Maternal app we will work
@@ -24,7 +24,7 @@ hard to satisfy and meet mother need by providing integrated services in Arabic 
 immediately. Also, the high quality and accurate information.
 
 
-### Programming languages 
+## Programming languages 
 
 - Dart SDK Version 2.18.0 or greater.
 - Flutter SDK Version 3.3.0 or greater.
@@ -38,12 +38,7 @@ immediately. Also, the high quality and accurate information.
 
 
 
-
-
-
-
-
-### lunching instructions
+### launching instructions
 
 To run the mobile application, you need the following
 <p>• You should have</p>
@@ -69,7 +64,7 @@ To run the mobile application, you need the following
 
 
 
-### Application structure
+## Application structure
 
 ```
 .
