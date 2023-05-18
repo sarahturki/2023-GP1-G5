@@ -253,7 +253,7 @@ ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('كلمة ا
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                              return 'الرجاء ادخال البريد الإلكتروني  xxmmmmx mcmmc ';
+                              return 'الرجاء ادخال البريد الإلكتروني';
                         }
                         return null;
                       },
