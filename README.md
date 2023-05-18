@@ -2,7 +2,7 @@
 # maternal App
 
 
-<div style="width: 60%; height: 60%">
+<div style="width: 40%; height: 40%">
   
 
   ![background](https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc)
