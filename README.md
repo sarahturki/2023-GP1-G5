@@ -2,12 +2,10 @@
 # maternal App
 
 
-<div style="width: 40%; height: 40%">
-  
-
-  ![background](https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc)
-
-</div>
+<h1> Hey there! I'm Lalit 👋 </h1>
+<h2> A Passionate Software Developer From India 🇮🇳 </h2>
+<img align="right" alt="GIF" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width="500"/>
+<h3> 👨🏻‍💻 About Me </h3>
 
 ### Table of contents
 - [introduction](#introduction)
