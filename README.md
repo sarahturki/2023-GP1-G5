@@ -47,18 +47,18 @@ immediately. Also, the high quality and accurate information.
 
 To run the mobile application, you need the following
 <p>• You should have</p>
-<ol >
+<ul style= "  list-style-type: circle"  >
   <li>Visual studio code</li>
   <li> Android emulator</li>
   <li>Flutter SDK</li>
    <li>Stable internet connection</li>
-</ol>
+</ul>
 
 
 
 
 <p>• Follow these steps to run the code</p>
-<ol style= "  list-style-type: circle"  >
+<ol  >
   <li>Import the code in VS</li>
   <li> Run the code</li>
   <li>Run the code</li>
