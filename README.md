@@ -46,24 +46,24 @@ immediately. Also, the high quality and accurate information.
 ### lunching instructions
 
 To run the mobile application, you need the following
-<p>You should have</p>
+<p>• You should have</p>
 <ol >
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Coca Cola</li>
+  <li>Visual studio code</li>
+  <li> Android emulator</li>
+  <li>Flutter SDK</li>
+   <li>Stable internet connection</li>
 </ol>
-Using flutter code
-To run the mobile application, you need the following
-• You should have
-• Visual studio code
-A
-• Android emulator
-• Flutter SDK
-• Stable internet connection
-• Follow these steps to run the code
-i. Import the code in VS
-i. Run the emulator
-ili. Run the code
+
+
+
+
+<p>• Follow these steps to run the code</p>
+<ol style= "  list-style-type: circle"  >
+  <li>Import the code in VS</li>
+  <li> Run the code</li>
+  <li>Run the code</li>
+  
+</ol>
 
 
 
