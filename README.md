@@ -29,6 +29,7 @@ immediately. Also, the high quality and accurate information.
 - Dart SDK Version 2.18.0 or greater.
 - Flutter SDK Version 3.3.0 or greater.
 - python 3.11.3 .
+- firebase .
 
 <p > <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="40px" height="40px"></a> 
  <a href="https://code.visualstudio.com/" title="Visual Studio Code"><img src="https://github.com/get-icon/geticon/raw/master/icons/visual-studio-code.svg" alt="Visual Studio Code" width="40px" height="40px"></a>
