@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "491477742112",
+    "project_id": "ammommyfirebase",
+    "storage_bucket": "ammommyfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491477742112:android:ae64ddf12fced5c1748245",
+        "android_client_info": {
+          "package_name": "com.ammommyappgp.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491477742112-07h2gkp2kn0n9au7ni25f3oppq44s0m3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx9-CREscRJzCs8ptW6L8KmtvlZ8YtvRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491477742112-07h2gkp2kn0n9au7ni25f3oppq44s0m3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
