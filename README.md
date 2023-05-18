@@ -16,7 +16,7 @@
 
 
 
-###introduction
+<p align="center"> ### introduction </p>
 
 We believe that every mother should feel comfortable in her
 pregnancy journey and be Reassured about herself and the baby's health. At Maternal app we will work
