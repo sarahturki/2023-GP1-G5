@@ -2,7 +2,7 @@
 # maternal App
 
 
-<img align="center" alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width=50%/>
+<img  alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width=50%/>
 
 ### Table of contents
 - [introduction](#introduction)
