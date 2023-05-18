@@ -16,7 +16,7 @@
 
 
 
-<p align="center"> ### introduction </p>
+### introduction 
 
 We believe that every mother should feel comfortable in her
 pregnancy journey and be Reassured about herself and the baby's health. At Maternal app we will work
@@ -30,7 +30,7 @@ immediately. Also, the high quality and accurate information.
 - Flutter SDK Version 3.3.0 or greater.
 - python 3.11.3 .
 
-<p align="center"> <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="40px" height="40px"></a> 
+<p > <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="40px" height="40px"></a> 
  <a href="https://code.visualstudio.com/" title="Visual Studio Code"><img src="https://github.com/get-icon/geticon/raw/master/icons/visual-studio-code.svg" alt="Visual Studio Code" width="40px" height="40px"></a>
 <a href="https://www.firebase.com/" title="Firebase"><img src="https://github.com/get-icon/geticon/raw/master/icons/firebase.svg" alt="Firebase" width="40px" height="40px"></a>
  <a href="https://www.dart.com/" title="dart"><img src="https://github.com/get-icon/geticon/raw/master/icons/dart.svg" alt="dart" width="40px" height="40px"></a></p>
@@ -39,7 +39,19 @@ immediately. Also, the high quality and accurate information.
 
 
 
+
+
+
+
 ### lunching instructions
+
+To run the mobile application, you need the following
+<p>You should have</p>
+<ol >
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Coca Cola</li>
+</ol>
 Using flutter code
 To run the mobile application, you need the following
 • You should have
