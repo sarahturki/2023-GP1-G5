@@ -2,10 +2,7 @@
 # maternal App
 
 
-<h1> Hey there! I'm Lalit 👋 </h1>
-<h2> A Passionate Software Developer From India 🇮🇳 </h2>
-<img align="center" alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width="500"/>
-<h3> 👨🏻‍💻 About Me </h3>
+<img align="center" alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width="400"/>
 
 ### Table of contents
 - [introduction](#introduction)
