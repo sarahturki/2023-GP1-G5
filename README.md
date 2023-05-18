@@ -1,68 +1,66 @@
 
-# Matrial App
+# maternal App
+
+<p align="center">
+<img  align= alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width=50%/>
+</p>
+
+
+
 ### Table of contents
-- [System requirements](#system-requirements)
-- [Figma design guidelines for better UI accuracy](#figma-design-guideline-for-better-accuracy)
-- [Check the UI of the entire app](#app-navigations)
+- [introduction](#introduction)
+- [Programming languages ](#Programming-languages )
 - [Application structure](#project-structure)
-- [How to format your code?](#how-you-can-do-code-formatting)
-- [How you can improve code readability?](#how-you-can-improve-the-readability-of-code)
-- [Libraries and tools used](#libraries-and-tools-used)
-- [Support](#support)
 
-### System requirements
 
-Dart SDK Version 2.18.0 or greater.
-Flutter SDK Version 3.3.0 or greater.
 
-### Figma design guidelines for better UI accuracy
 
-Read our guidelines to increase the accuracy of design-to-code conversion by optimizing Figma designs.
-https://docs.dhiwise.com/docs/Designguidelines/intro
 
-### Check the UI of the entire app
+## introduction 
 
-Check the UI of all the app screens from a single place by setting up the 'initialRoute'  to AppNavigation in the AppRoutes.dart file.
+We believe that every mother should feel comfortable in her
+pregnancy journey and be Reassured about herself and the baby's health. At Maternal app we will work
+hard to satisfy and meet mother need by providing integrated services in Arabic version that respond
+immediately. Also, the high quality and accurate information.
 
-### Application structure
 
-After successful build, your application structure should look like this:
+## Programming languages 
 
-```
-.
-├── android                         - It contains files required to run the application on an Android platform.
-├── assets                          - It contains all images and fonts of your application.
-├── ios                             - It contains files required to run the application on an iOS platform.
-├── lib                             - Most important folder in the application, used to write most of the Dart code..
-    ├── main.dart                   - Starting point of the application
-    ├── core
-    │   ├── app_export.dart         - It contains commonly used file imports
-    │   ├── constants               - It contains static constant class file
-    │   └── utils                   - It contains common files and utilities of the application
-    ├── presentation                - It contains widgets of the screens 
-    ├── routes                      - It contains all the routes of the application
-    └── theme                       - It contains app theme and decoration classes
-    └── widgets                     - It contains all custom widget classes
-```
+- Dart SDK Version 2.18.0 or greater.
+- Flutter SDK Version 3.3.0 or greater.
+- python 3.11.3 .
+- firebase .
 
-### How to format your code?
+<p > <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="40px" height="40px"></a> 
+ <a href="https://code.visualstudio.com/" title="Visual Studio Code"><img src="https://github.com/get-icon/geticon/raw/master/icons/visual-studio-code.svg" alt="Visual Studio Code" width="40px" height="40px"></a>
+<a href="https://www.firebase.com/" title="Firebase"><img src="https://github.com/get-icon/geticon/raw/master/icons/firebase.svg" alt="Firebase" width="40px" height="40px"></a>
+ <a href="https://www.dart.com/" title="dart"><img src="https://github.com/get-icon/geticon/raw/master/icons/dart.svg" alt="dart" width="40px" height="40px"></a></p>
 
-- if your code is not formatted then run following command in your terminal to format code
-  ```
-  dart format .
-  ```
 
-### How you can improve code readability?
 
-Resolve the errors and warnings that are shown in the application.
 
-### Libraries and tools used
+### launching instructions
 
-- Provider - State management
-  https://pub.dev/packages/provider
-- cached_network_image - For storing internet image into cache
-  https://pub.dev/packages/cached_network_image
+To run the mobile application, you need the following
+<p>• You should have</p>
+<ul style= "  list-style-type: circle"  >
+  <li>Visual studio code</li>
+  <li> Android emulator</li>
+  <li>Flutter SDK</li>
+   <li>Stable internet connection</li>
+</ul>
 
-### Support
 
-If you have any problems or questions, go to our Discord channel, where we will help you as quickly as possible: https://discord.com/invite/rFMnCG5MZ7
+
+
+<p>• Follow these steps to run the code</p>
+<ol  >
+  <li>Import the code in VS</li>
+  <li> Run the code</li>
+  <li>Run the code</li>
+  
+</ol>
+
+
+
+
