@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          //     const Locale('en', 'USA'),
           const Locale('ar', 'SA'),
         ],
       debugShowCheckedModeBanner: false,

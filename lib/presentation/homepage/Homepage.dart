@@ -33,7 +33,7 @@ body:  Center(child:
  Column(
   mainAxisAlignment: MainAxisAlignment.center,
    children: [
-     Text(' hello you are here '),
+     
    
    Text(user.email!),
 
