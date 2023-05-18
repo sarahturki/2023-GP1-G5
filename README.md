@@ -32,7 +32,7 @@ python 3.11.3 .
 <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="21px" height="21px"></a>
 <a href="https://code.visualstudio.com/" title="Visual Studio Code"><img src="https://github.com/get-icon/geticon/raw/master/icons/visual-studio-code.svg" alt="Visual Studio Code" width="21px" height="21px"></a>
 <a href="https://www.firebase.com/" title="Firebase"><img src="https://github.com/get-icon/geticon/raw/master/icons/firebase.svg" alt="Firebase" width="21px" height="21px"></a>
-<a href="https://www.dart.com/" title="Firebase"><img src="https://github.com/get-icon/geticon/raw/master/icons/dart.svg" alt="dart" width="21px" height="21px"></a>
+<a href="https://www.dart.com/" title="dart"><img src="https://github.com/get-icon/geticon/raw/master/icons/dart.svg" alt="dart" width="21px" height="21px"></a>
 
 
 
