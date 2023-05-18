@@ -2,9 +2,12 @@
 # maternal App
 
 
+<div style="width: 60%; height: 60%">
+  
 
-![background](https://github.com/sarahturki/2023-GP1-G5/assets/130418270/b46e261e-e95a-4ea1-8a62-2a7dca0da554)
+  ![background](https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc)
 
+</div>
 
 ### Table of contents
 - [introduction](#introduction)
