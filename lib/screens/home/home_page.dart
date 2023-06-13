@@ -221,7 +221,7 @@ String titlesss = weektitle.replaceAll('\\n', '\n');
                   Padding(
                     padding: const EdgeInsets.only(right: 50),
                     child: Text(
-                      userData!.firstName + userData!.lastName,
+                      userData!.firstName + " " + userData!.lastName,
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 36),
                     ),
