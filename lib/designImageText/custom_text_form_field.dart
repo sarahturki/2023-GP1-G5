@@ -1,9 +1,11 @@
+// ignore_for_file: constant_identifier_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'package:ammommyappgp/core/app_export.dart';
 class CustomTextFormField extends StatelessWidget {
   CustomTextFormField(
-      {this.padding,
+      {super.key, this.padding,
       this.variant,
       this.fontStyle,
       this.alignment,

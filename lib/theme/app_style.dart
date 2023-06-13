@@ -253,7 +253,7 @@ class AppStyle {
   );
 
   static TextStyle txtABeeZeeRegular14 = TextStyle(
-    color: Color.fromARGB(255, 84, 83, 83),
+    color: const Color.fromARGB(255, 84, 83, 83),
     fontSize: getFontSize(
       14,
     ),

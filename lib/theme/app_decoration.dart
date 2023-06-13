@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ammommyappgp/core/app_export.dart';
 
 class AppDecoration {
-  static BoxDecoration get outlineBlack9003f => BoxDecoration();
+  static BoxDecoration get outlineBlack9003f => const BoxDecoration();
   static BoxDecoration get outlineIndigoA70033 => BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment(
+          begin: const Alignment(
             -0.04,
             -0.83,
           ),
-          end: Alignment(
+          end: const Alignment(
             0.8,
             1.68,
           ),
@@ -19,18 +19,15 @@ class AppDecoration {
           ],
         ),
       );
-       static BoxDecoration get signup => BoxDecoration(
+  static BoxDecoration get signup => const BoxDecoration(
         gradient: LinearGradient(
-        
           colors: [
-Color.fromARGB(255, 244, 208, 228),
-         Color.fromARGB(255, 226, 87, 154)
+            Color.fromARGB(255, 244, 208, 228),
+            Color.fromARGB(255, 226, 87, 154)
           ],
         ),
       );
 
-
-      
   static BoxDecoration get fillWhiteA700 => BoxDecoration(
         color: ColorConstant.whiteA700,
       );
