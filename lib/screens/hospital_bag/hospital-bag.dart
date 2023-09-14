@@ -43,7 +43,7 @@ class _HospitalBagState extends State<HospitalBag> {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('ترجع'),
+                      child: const Text('تراجع'),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     TextButton(
@@ -67,6 +67,10 @@ class _HospitalBagState extends State<HospitalBag> {
         },
         child: const Icon(Icons.add),
       ),
+
+
+
+      
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: SingleChildScrollView(
@@ -119,6 +123,12 @@ class _HospitalBagState extends State<HospitalBag> {
                                   ],
                                 );
       
+
+
+
+
+
+
                                 // show the dialog
                                 showDialog(
                                   context: context,

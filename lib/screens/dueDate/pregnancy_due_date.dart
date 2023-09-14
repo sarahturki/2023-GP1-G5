@@ -18,11 +18,9 @@ class PregnancyDueDatePage extends StatefulWidget {
 class _PregnancyDueDatePageState extends State<PregnancyDueDatePage> {
   DateTime? selectedDate;
   bool _isvisible = false;
-  // String newDate = "";
-  // var dueDate;
+ 
   String formatedDuedate = "";
-  // num numofweeks = 0;
-
+ 
 ///////////////////////////////////////////////////////////// for sending info
 
   ////////////////////////////////////////////////////

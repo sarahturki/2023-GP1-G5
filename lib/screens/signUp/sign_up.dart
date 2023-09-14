@@ -95,7 +95,7 @@ class _SignUpState extends State<SignUp> {
     _birthController.dispose();
   }
 
-//////////////
+//////////////  format for dates 
 
   String newDate = "";
   String formatedDuedate = "12/2/2020";
@@ -287,6 +287,8 @@ class _SignUpState extends State<SignUp> {
                         );
                       }
                     },
+
+                    
                     decoration: InputDecoration(
                       labelText: 'تاريخ الميلاد: ',
                       labelStyle: const TextStyle(

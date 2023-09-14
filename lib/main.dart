@@ -1,11 +1,11 @@
-import 'package:ammommyappgp/core/constants/firebase_auth_helper.dart';
 import 'package:ammommyappgp/core/constants/firebase_firestore_helper.dart';
+import 'package:ammommyappgp/routes/app_routes.dart';
 import 'package:ammommyappgp/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:ammommyappgp/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'core/constants/firebase_auth_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,25 +28,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         visualDensity: VisualDensity.standard,
+        dividerColor: Colors.transparent,
         primaryColor: const Color(0xffE187B0),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xffE187B0)),
         useMaterial3: true,
       ),
       title: 'ammommyappgp',
-      // localizationsDelegates: const [
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      // ],
-      // supportedLocales: const [
-      //   Locale('ar', 'SA'),
-      // ],
+
       debugShowCheckedModeBanner: false,
       routes: AppRoutes.routes,
-      // home: const AuthState(),
-      // home: const PregnancyDueDatePage(),
+      // home: const ContractionsCalculator(),
       home: StreamBuilder(
           stream: FirebaseAuthHelper.instance.getAuthChange,
           builder: (context, snapshot) {
+
             if (snapshot.hasData) {
               return const SplashScreen(ishome: true);
             }

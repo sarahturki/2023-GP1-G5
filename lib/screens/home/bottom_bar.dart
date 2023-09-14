@@ -3,7 +3,10 @@
 import 'package:ammommyappgp/core/constants/constants.dart';
 import 'package:ammommyappgp/core/constants/firebase_firestore_helper.dart';
 import 'package:ammommyappgp/models/user_model.dart';
+import 'package:ammommyappgp/screens/calendar_screen/calendar_screen.dart';
+import 'package:ammommyappgp/screens/chat_bot/chat_bot.dart';
 import 'package:ammommyappgp/screens/home/home_page.dart';
+import 'package:ammommyappgp/screens/weight_control/weight_control.dart';
 import 'package:flutter/material.dart';
 
 import '../check_list/check_list.dart';
@@ -19,19 +22,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   // Properties & Variables needed
 
   int currentTab = 0; // to keep track of active tab index
-  final List<Widget> screens = [
-    const HomePage(),
-    Container(
-      child: const Center(child: Text("Empty")),
-    ),
-    Container(
-      child: const Center(child: Text("Empty")),
-    ),
-    Container(
-      child: const Center(child: Text("Empty")),
-    ),
-    const CheckList(),
-  ]; // to store nested tabs
+
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = const HomePage();
 
@@ -55,12 +46,11 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             remainWeeks = 40 - substractWeeks;
             remainDays = difference.inDays;
           });
-          currentWeeklyInfo = weeklyInfo
-              .where((element) => element.week == remainWeeks.toString())
-              .first;
-          // return remainingWeeks;
-          // String formattedDate =
-          //     "${futureDate.year}-${futureDate.month}-${futureDate.day}";
+          if (weeklyInfo.isNotEmpty) {
+            currentWeeklyInfo = weeklyInfo
+                .where((element) => element.week == remainWeeks.toString())
+                .first;
+          }
         }
         isLoading = false;
       });
@@ -90,9 +80,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
         child: Image.asset("assets/robot.png"),
         onPressed: () {
           setState(() {
-            currentScreen = Container(
-              child: const Center(child: Text("Empty")),
-            ); // if user taps on this dashboard tab will be active
+            currentScreen =const ChatBot();
             currentTab = 1;
           });
         },
@@ -134,9 +122,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Container(
-                          child: const Center(child: Text("Empty")),
-                        ); //\;\ if user taps on this dashboard tab will be active
+                        currentScreen =const CalendarScreen();
                         currentTab = 1;
                       });
                     },
@@ -160,9 +146,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Container(
-                          child: const Center(child: Text("Empty")),
-                        ); // if user taps on this dashboard tab will be active
+                        currentScreen = const WeightControl();
                         currentTab = 2;
                       });
                     },
