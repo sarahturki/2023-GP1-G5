@@ -57,7 +57,14 @@ To run the mobile application, you need the following
 <ol  >
   <li>Import the code in VS</li>
   <li> Run the code</li>
-  <li>Run the code</li>
+  
+</ol>
+<p>• Follow these steps to run the code</p>
+
+<ol  >
+  <li>open this path build\app\outputs\flutter-apk\app-release.apk</li>
+  <li> Download the APK file on your device or emulator </li>
+  
   
 </ol>
 
