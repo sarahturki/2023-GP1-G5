@@ -4,6 +4,8 @@ import 'package:ammommyappgp/core/constants/constants.dart';
 import 'package:ammommyappgp/core/constants/firebase_firestore_helper.dart';
 import 'package:ammommyappgp/widgets/custom_appbar.dart';
 import 'package:ammommyappgp/widgets/custom_list_tile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/todos_model.dart';
@@ -28,18 +30,19 @@ class _HospitalBagState extends State<HospitalBag> {
               builder: (context) {
                 String newTitle = '';
                 return AlertDialog(
-                  title: const Text('إضافة إلى حقيبة المستشفى' , textAlign: TextAlign.right,),
+                  title: const Text(
+                    'إضافة إلى حقيبة المستشفى',
+                    textAlign: TextAlign.right,
+                  ),
                   content: TextField(
-                     textDirection: TextDirection.rtl,
+                    textDirection: TextDirection.rtl,
                     autofocus: true,
                     onChanged: (value) {
                       newTitle = value;
                     },
-                    decoration:
-                        const InputDecoration(
-                          
-                          hintTextDirection: TextDirection.rtl,
-                          hintText: 'اضيفي هنا'),
+                    decoration: const InputDecoration(
+                        hintTextDirection: TextDirection.rtl,
+                        hintText: 'اضيفي هنا'),
                   ),
                   actions: <Widget>[
                     TextButton(
@@ -67,10 +70,6 @@ class _HospitalBagState extends State<HospitalBag> {
         },
         child: const Icon(Icons.add),
       ),
-
-
-
-      
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: SingleChildScrollView(
@@ -86,16 +85,33 @@ class _HospitalBagState extends State<HospitalBag> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: Text(""));
                   }
-                  return snapshot.data == null || snapshot.data!.isEmpty
+                  final sortedTasks = List.from(snapshot.data!);
+
+                  sortedTasks.sort((a, b) {
+                    int aDate = a.dateTime!.microsecondsSinceEpoch;
+                    int bDate = b.dateTime!.microsecondsSinceEpoch;
+                    return bDate.compareTo(aDate);
+                  });
+                  sortedTasks.sort((a, b) {
+                    if (a.completed && !b.completed) {
+                      return 1; // a should come after b
+                    } else if (!a.completed && b.completed) {
+                      return -1; // a should come before b
+                    } else {
+                      return 0; // no change in order
+                    }
+                  });
+                  return snapshot.data == null || sortedTasks.isEmpty
                       ? const Center(
                           child: Text(""),
                         )
                       : ListView.builder(
                           shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
+                          primary: false,
+                          itemCount: sortedTasks.length,
                           itemBuilder: (context, index) {
                             return CustomListTile(
-                              title: snapshot.data![index].name,
+                              title: sortedTasks[index].name,
                               onDelete: () {
                                 Widget cancelButton = TextButton(
                                   child: const Text("تراجع"),
@@ -108,26 +124,26 @@ class _HospitalBagState extends State<HospitalBag> {
                                   onPressed: () {
                                     FirebaseFirestoreHelper.instance
                                         .daleteNameCompletion(
-                                            snapshot.data![index], "hospitalBag");
+                                            sortedTasks[index], "hospitalBag");
                                     Navigator.of(context).pop();
                                   },
                                 );
-      
+
                                 // set up the AlertDialog
                                 AlertDialog alert = AlertDialog(
-                                  title: const Text("حذف من حقيبة المستشفى" ,textAlign: TextAlign.right,),
-                                  content: const Text("هل أنتي متاكدة؟" ,textAlign: TextAlign.right,),
+                                  title: const Text(
+                                    "حذف من حقيبة المستشفى",
+                                    textAlign: TextAlign.right,
+                                  ),
+                                  content: const Text(
+                                    "هل أنتي متاكدة؟",
+                                    textAlign: TextAlign.right,
+                                  ),
                                   actions: [
                                     cancelButton,
                                     continueButton,
                                   ],
                                 );
-      
-
-
-
-
-
 
                                 // show the dialog
                                 showDialog(
@@ -143,17 +159,21 @@ class _HospitalBagState extends State<HospitalBag> {
                                     builder: (context) {
                                       String newTitle = '';
                                       return AlertDialog(
-                                        title: const Text('تعديل حقيبة المستشفى' , textAlign: TextAlign.right,),
+                                        title: const Text(
+                                          'تعديل حقيبة المستشفى',
+                                          textAlign: TextAlign.right,
+                                        ),
                                         content: TextField(
-                                           textDirection: TextDirection.rtl,
+                                          textDirection: TextDirection.rtl,
                                           autofocus: true,
                                           onChanged: (value) {
                                             newTitle = value;
                                           },
                                           decoration: InputDecoration(
-                                            hintTextDirection: TextDirection.rtl,
+                                              hintTextDirection:
+                                                  TextDirection.rtl,
                                               hintText:
-                                                  snapshot.data![index].name),
+                                                  sortedTasks[index].name),
                                         ),
                                         actions: <Widget>[
                                           TextButton(
@@ -165,19 +185,24 @@ class _HospitalBagState extends State<HospitalBag> {
                                             child: const Text('تعديل'),
                                             onPressed: () async {
                                               if (newTitle == "") {
-                                                showMessage("الرجاء إدخال التعديل");
+                                                showMessage(
+                                                    "الرجاء إدخال التعديل");
                                               } else {
                                                 Todo todo = Todo(
                                                     completed: snapshot
                                                         .data![index].completed,
+                                                    dateTime: snapshot
+                                                        .data![index].dateTime,
                                                     name: newTitle,
-                                                    uid: snapshot
-                                                        .data![index].uid);
-                                                await FirebaseFirestoreHelper
-                                                    .instance
-                                                    .updateNameCompletion(
-                                                        todo, "hospitalBag");
-      
+                                                    uid:
+                                                        sortedTasks[index].uid);
+                                                String? uid = FirebaseAuth
+                                                    .instance.currentUser!.uid;
+                                              
+                                                 await FirebaseFirestoreHelper.instance
+                                              .updateNameCompletion(
+                                                  todo, "hospitalBag");
+
                                                 Navigator.of(context).pop();
                                                 setState(() {});
                                               }
@@ -188,24 +213,23 @@ class _HospitalBagState extends State<HospitalBag> {
                                     });
                               },
                               onChanged: (value) async {
-                                snapshot.data![index].completed = value!;
-      
+                                sortedTasks[index].completed = value!;
+
                                 Todo todo = Todo(
-                                    completed: snapshot.data![index].completed,
-                                    name: snapshot.data![index].name,
-                                    uid: snapshot.data![index].uid);
+                                    completed: sortedTasks[index].completed,
+                                    name: sortedTasks[index].name,
+                                    uid: sortedTasks[index].uid);
                                 await FirebaseFirestoreHelper.instance
                                     .updateNameCompletion(todo, "hospitalBag");
-      
+
                                 setState(() {});
                               },
-                              value: snapshot.data![index].completed,
+                              value: sortedTasks[index].completed,
                             );
                           },
                         );
                 },
               ),
-          
             ],
           ),
         ),

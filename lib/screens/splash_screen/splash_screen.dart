@@ -34,12 +34,32 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: Image.asset("assets/logo-removebg-preview 4.png")),
+            SizedBox(
+                        width: double.maxFinite,
+                        height: 250,
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 250,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/img_group56.png'),
+                              alignment: Alignment.center,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/img_logoremovebgpreview_293x252.png'),
+                                      fit: BoxFit.contain))),
+                        ),
+                      ),
           const Text("أمومي",
               // textAlign: TextAlign.left,
               style: TextStyle(
                 color: Color.fromARGB(205, 186, 11, 98),
-                fontSize: 30,
+                fontSize: 50,
                 fontWeight: FontWeight.bold,
               )),
         ],

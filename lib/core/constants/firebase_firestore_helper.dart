@@ -1,6 +1,8 @@
 import 'package:ammommyappgp/core/constants/constants.dart';
 import 'package:ammommyappgp/models/appointments_model.dart';
+import 'package:ammommyappgp/models/article_model.dart';
 import 'package:ammommyappgp/models/contractions_model.dart';
+import 'package:ammommyappgp/models/faq_model.dart';
 import 'package:ammommyappgp/models/report_model.dart';
 import 'package:ammommyappgp/models/todos_model.dart';
 import 'package:ammommyappgp/models/user_model.dart';
@@ -26,7 +28,6 @@ class FirebaseFirestoreHelper {
     ]);
     await _firestore.collection('user').doc(userId).update({
       'dueDate': formatedDuedate,
-      // add any other user data you want to store
     });
   }
 
@@ -39,7 +40,12 @@ class FirebaseFirestoreHelper {
 
   Future<void> addSuggestionMaleName() async {
     for (var element in suggestionNameMale) {
-      await addName(Todo(completed: false, name: element, uid: "1"),
+      await addName(
+          Todo(
+            completed: false,
+            name: element,
+            uid: "1",
+          ),
           "maleNameSuggestion");
     }
   }
@@ -50,6 +56,7 @@ class FirebaseFirestoreHelper {
         .collection("user")
         .doc(uid)
         .collection('todos')
+        .orderBy("dateTime", descending: true)
         .snapshots()
         .map(
           (QuerySnapshot querySnapshot) => querySnapshot.docs
@@ -114,8 +121,11 @@ class FirebaseFirestoreHelper {
     DocumentReference<Map<String, dynamic>> reference =
         _firestore.collection("user").doc(uid).collection(collectionName).doc();
 
-    Todo add =
-        Todo(completed: todo.completed, name: todo.name, uid: reference.id);
+    Todo add = Todo(
+        completed: todo.completed,
+        name: todo.name,
+        uid: reference.id,
+        dateTime: DateTime.now());
     return reference.set(add.toJson());
   }
 
@@ -197,12 +207,13 @@ class FirebaseFirestoreHelper {
 
   Stream<List<AppointmentsModel>> getAppoinment() {
     // String? uid = _auth.currentUser!.uid;
-        String? uid = FirebaseAuth.instance.currentUser!.uid;
+    String? uid = FirebaseAuth.instance.currentUser!.uid;
 
     return _firestore
         .collection("user")
         .doc(uid)
         .collection("appointments")
+        .orderBy("dateTime", descending: true)
         .snapshots()
         .map(
           (QuerySnapshot querySnapshot) => querySnapshot.docs
@@ -215,7 +226,7 @@ class FirebaseFirestoreHelper {
   Future<bool> addAppointment(AppointmentsModel appointmentsModel) async {
     try {
       // String? uid = _auth.currentUser!.uid;
-    String? uid = FirebaseAuth.instance.currentUser!.uid;
+      String? uid = FirebaseAuth.instance.currentUser!.uid;
 
       DocumentReference reference = _firestore
           .collection("user")
@@ -237,7 +248,7 @@ class FirebaseFirestoreHelper {
   Future<bool> updateAppointment(AppointmentsModel appointmentsModel) async {
     try {
       // String? uid = _auth.currentUser!.uid;
-    String? uid = FirebaseAuth.instance.currentUser!.uid;
+      String? uid = FirebaseAuth.instance.currentUser!.uid;
 
       DocumentReference reference = _firestore
           .collection("user")
@@ -255,7 +266,7 @@ class FirebaseFirestoreHelper {
   Future<bool> deleteAppointment(String id) async {
     try {
       // String? uid = _auth.currentUser!.uid;
-    String? uid = FirebaseAuth.instance.currentUser!.uid;
+      String? uid = FirebaseAuth.instance.currentUser!.uid;
 
       DocumentReference reference = _firestore
           .collection("user")
@@ -264,8 +275,10 @@ class FirebaseFirestoreHelper {
           .doc(id);
 
       await reference.delete();
+
       return true;
     } catch (e) {
+      print(e.toString());
       return false;
     }
   }
@@ -278,6 +291,7 @@ class FirebaseFirestoreHelper {
         .collection("user")
         .doc(uid)
         .collection("reports")
+        .orderBy("datetime", descending: true)
         .snapshots()
         .map(
           (QuerySnapshot querySnapshot) => querySnapshot.docs
@@ -390,12 +404,12 @@ class FirebaseFirestoreHelper {
         for (var doc in querySnapshot.docs) {
           await doc.reference.delete();
         }
-        showMessage("Successfully Clear");
+        showMessage("تم الحذف بنجاح");
       } else {
-        showMessage("Empty Please Add Something to deleted");
+        showMessage("فارغ الرجاء إضافة شيء لحذفه");
       }
     } catch (e) {
-      showMessage("Something went wrong");
+      showMessage("هناك خطأ ما");
     }
   }
 
@@ -405,9 +419,9 @@ class FirebaseFirestoreHelper {
       DocumentReference reference = _firestore.collection("user").doc(uid);
 
       await reference.update(userModel.toJson());
-      showMessage("Successfully Update");
+      showMessage("تم التحديث بنجاح");
     } catch (e) {
-      showMessage("Something went wrong");
+      showMessage("هناك خطأ ما");
     }
   }
 
@@ -424,25 +438,49 @@ class FirebaseFirestoreHelper {
         "weight": weight,
         "id": weekNumber,
       });
-      // showMessage("Successfully Update");
     } catch (e) {
-      showMessage("Something went wrong");
+      showMessage("هناك خطأ ما");
     }
   }
 
-  Future<List<WeightModel>> getAllWeight() async {
-    try {
-      String? uid = FirebaseAuth.instance.currentUser!.uid;
-      CollectionReference reference =
-          _firestore.collection("user").doc(uid).collection("weights");
+  Stream<List<WeightModel>> getAllWeight() {
+    String? uid = FirebaseAuth.instance.currentUser!.uid;
 
-      QuerySnapshot<Object?> querySnapshot = await reference.get();
-      return querySnapshot.docs
-          .map((e) => WeightModel.fromJson(e.data() as Map<String, dynamic>))
-          .toList();
-      // showMessage("Successfully Update");
-    } catch (e) {
-      return [];
-    }
+    return _firestore
+        .collection("user")
+        .doc(uid)
+        .collection("weights")
+        .snapshots()
+        .map(
+          (QuerySnapshot querySnapshot) => querySnapshot.docs
+              .map((doc) =>
+                  WeightModel.fromJson(doc.data() as Map<String, dynamic>))
+              .toList(),
+        );
+  }
+
+  Future<List<FaqModel>> getFaq(int month) async {
+    QuerySnapshot<Map<String, dynamic>> documentSnapshot = await _firestore
+        .collection("faq")
+        .doc(getMonth(month).toString())
+        .collection("faqQuestions")
+        .get();
+    List<FaqModel> faqList =
+        documentSnapshot.docs.map((e) => FaqModel.fromJson(e.data())).toList();
+    // UserModel returnUserModel = UserModel.fromJson(documentSnapshot.data()!);
+    return faqList;
+  }
+
+  Future<List<ArticleModel>> getArticle(int month) async {
+    QuerySnapshot<Map<String, dynamic>> documentSnapshot = await _firestore
+        .collection("articles")
+        .doc(getMonth(month).toString())
+        .collection("article")
+        .get();
+    List<ArticleModel> faqList = documentSnapshot.docs
+        .map((e) => ArticleModel.fromJson(e.data()))
+        .toList();
+    // UserModel returnUserModel = UserModel.fromJson(documentSnapshot.data()!);
+    return faqList;
   }
 }

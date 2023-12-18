@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:ammommyappgp/core/constants/constants.dart';
 import 'package:ammommyappgp/models/weight_model.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,9 @@ Widget dateCustom(
 
 class WeightControlDetails extends StatefulWidget {
   final WeightModel? weightModel;
-  const WeightControlDetails({super.key, required this.weightModel});
+  final List<WeightModel> weightList;
+  const WeightControlDetails(
+      {super.key, required this.weightModel, required this.weightList});
 
   @override
   State<WeightControlDetails> createState() => _WeightControlDetailsState();
@@ -61,7 +65,93 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
     setState(() {
       weightModel = widget.weightModel;
     });
+    getMessage();
     super.initState();
+  }
+
+  WeightModel? getWeightModelById(
+    String id,
+  ) {
+    for (var weightModel in widget.weightList) {
+      if (weightModel.id == id) {
+        return weightModel;
+      }
+    }
+    return null;
+  }
+
+  String message = "";
+  // double gainWeight = 0.0;
+  double calculateDifference(double initialWeight, double finalWeight) {
+    return finalWeight - initialWeight;
+  }
+
+  double totalGainLoss = 0.0;
+  void getMessage() {
+    WeightModel? lastNonNullValue;
+    WeightModel? secondToLastNonNullValue;
+    for (WeightModel? value in widget.weightList.reversed) {
+      if (value != null) {
+        if (lastNonNullValue == null) {
+          lastNonNullValue = value;
+        } else if (secondToLastNonNullValue == null) {
+          secondToLastNonNullValue = value;
+          break; // Found the second non-null value
+        }
+      }
+    }
+
+    if (lastNonNullValue != null && secondToLastNonNullValue != null) {
+      double firstSecondDifference = calculateDifference(
+        double.parse(widget.weightList.first.weight),
+        double.parse(secondToLastNonNullValue.weight),
+      );
+      double firstThirdDifference = calculateDifference(
+        double.parse(widget.weightList.first.weight),
+        double.parse(lastNonNullValue.weight),
+      );
+
+      totalGainLoss = firstThirdDifference - firstSecondDifference ;
+      int currentMonth = getMonth(remainWeeks!);
+      double currentWeight = double.parse(lastNonNullValue.weight);
+      double previousWeight = double.parse(widget.weightList.first.weight);
+      double gainWeight = currentWeight - previousWeight;
+
+      if (gainWeight < -2) {
+        message = "فقدان وزن غير طبيعي";
+      } else if (currentMonth <= 3) {
+        if (gainWeight > 2) {
+          message = "وزن زائد";
+        } else {
+          message = "وزن طبيعي";
+        }
+      } else if (currentMonth > 3 && currentMonth <= 5) {
+        if (gainWeight > 4) {
+          message = "وزن زائد";
+        } else {
+          message = "وزن طبيعي";
+        }  if (gainWeight < -4) {
+        message = "فقدان وزن غير طبيعي";
+      }
+      } else if (currentMonth == 6) {
+        if (gainWeight > 6) {
+          message = "وزن زائد";
+        } else {
+          message = "وزن طبيعي";
+        }if (gainWeight < -6) {
+        message = "فقدان وزن غير طبيعي";
+      }
+      } else if (currentMonth >= 7) {
+        if (gainWeight > 8) {
+          message = "وزن زائد";
+        } else {
+          message = "وزن طبيعي";
+        } if (gainWeight < -8) {
+        message ="فقدان وزن غير طبيعي";
+      }
+      }
+    }
+    setState(() {});
   }
 
   @override
@@ -86,6 +176,7 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 230,
@@ -100,7 +191,7 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(right: 50),
+                    padding: EdgeInsets.only(right: 3),
                     child: Text(
                       textAlign: TextAlign.center,
                       "مراقبة الوزن",
@@ -118,37 +209,25 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           int indexCount = index + 1;
-                          /////////////////////////////////////////////////////////////////////////////////////////
-                          ///
-                          ///
-                          ///
-                          ///
-                          ///
-                          /// weeks view
-                          return GestureDetector(
-                            onTap: () {
-                              currentWeeklyInfo = weeklyInfo
-                                  .where((element) =>
-                                      element.week == indexCount.toString())
-                                  .first;
 
-                              setState(() {});
-                            },
-                            child: dateCustom(
-                              title: "الأسبوع",
-                              subtitle: arabicNumber[index].toString(),
-                              weight: weightModel == null
-                                  ? "-"
-                                  : weightModel!.id == indexCount.toString()
-                                      ? weightModel!.weight
-                                      : "-",
-                              textColor: indexCount == remainWeeks
-                                  ? Colors.white
-                                  : Colors.black,
-                              color: indexCount == remainWeeks
-                                  ? const Color(0xffD66095)
-                                  : Colors.white,
-                            ),
+                          return dateCustom(
+                            title: "الأسبوع",
+                            subtitle: arabicNumber[index].toString(),
+                            weight: getWeightModelById(indexCount.toString()) ==
+                                    null
+                                ? "-"
+                                : getWeightModelById(indexCount.toString())!
+                                            .id ==
+                                        indexCount.toString()
+                                    ? getWeightModelById(indexCount.toString())!
+                                        .weight
+                                    : "-",
+                            textColor: indexCount == remainWeeks
+                                ? Colors.white
+                                : Colors.black,
+                            color: indexCount == remainWeeks
+                                ? const Color(0xffD66095)
+                                : Colors.white,
                           );
                         },
                       ),
@@ -158,7 +237,33 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
               ),
             ),
             const SizedBox(
-              height: 100.0,
+              height: 56.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GestureDetector(
+                onTap: (){
+                  print(widget.weightList.length);
+                  print(widget.weightList.first.weight);
+                },
+
+                
+                child: Center(
+                  child: Text(
+                    totalGainLoss < 0
+                        ? "لقد فقدتي  ${totalGainLoss.toString().replaceAll("-", "")}  كجم من الوزن"
+                        : "لقد اكتسبتي $totalGainLoss  كجم من الوزن",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30.0,
             ),
             Align(
               alignment: Alignment.topRight,
@@ -169,7 +274,6 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
                     setState(() {
                       isEdit = !isEdit;
                     });
-                    print("Hwello $isEdit");
                   },
                   icon: Icon(
                     isEdit ? Icons.close : Icons.edit_calendar,
@@ -179,54 +283,96 @@ class _WeightControlDetailsState extends State<WeightControlDetails> {
                 ),
               ),
             ),
-            Card(
-              child: Container(
-                padding: const EdgeInsets.all(40),
-                width: 350,
-                child: Column(
-                  children: [
-                    const Text(
-                      ":وزنك الحالي هو  ",
-                      style: TextStyle(
-                        fontSize: 24,
+            Align(
+              alignment: Alignment.center,
+              child: Card(
+                child: Container(
+                  padding: const EdgeInsets.all(40),
+                  width: 350,
+                  child: Column(
+                    children: [
+                      const Text(
+                        ": وزنك الحالي هو ",
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 12.0,
-                    ),
-                    isEdit
-                        ? TextFormField(
-                            onFieldSubmitted: (value) async {
-                              await FirebaseFirestoreHelper.instance
-                                  .addWeight(remainWeeks.toString(), value);
-                              setState(() {
-                                if (weightModel != null) {
-                                  weightModel!.weight = value;
-                                }
-                                isEdit = false;
-                              });
-                            },
-                            keyboardType: TextInputType.number,
-                            style: const TextStyle(
-                              fontSize: 22,
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      isEdit
+                          ? TextFormField(
+
+                                                    maxLength: 5 ,
+
+                              onFieldSubmitted: (value) async {
+                                await FirebaseFirestoreHelper.instance
+                                    .addWeight(remainWeeks.toString(), value);
+                                setState(() {
+                                  if (weightModel != null) {
+                                    weightModel!.weight = value;
+                                  } else {
+                                    weightModel = WeightModel(
+                                      weight: value,
+                                      id: remainWeeks.toString(),
+                                    );
+                                    widget.weightList.add(weightModel!);
+                                  }
+                                  isEdit = false;
+                                });
+                                getMessage();
+                              },
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(
+                                fontSize: 22,
+                              ),
+                              textAlign: TextAlign.center,
+                              decoration: const InputDecoration(
+                                                          counterText: "الحد الأقصى 5 ارقام",
+
+                                border: InputBorder.none,
+                                // alignLabelWithHint: true,
+                                hintText: "انقر هنا للكتابة",
+                              ),
+                            )
+                          : Text(
+                              "${weightModel == null ? "انقر على العلامة اعلاها " : weightModel!.weight} ",
+                              style: const TextStyle(
+                                fontSize: 22,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              // alignLabelWithHint: true,
-                              hintText: "اضغط هنا للكتابة",
-                            ),
-                          )
-                        : Text(
-                            "${weightModel == null ? "--" : weightModel!.weight} Kg",
-                            style: const TextStyle(
-                              fontSize: 22,
-                            ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
+            const SizedBox(
+              height: 36.0,
+            ),
+            message.isEmpty
+                ? const Center()
+                : Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 45,
+                      alignment: Alignment.center,
+                      width: 250,
+                      decoration: BoxDecoration(
+                        color:
+                            message == "وزن طبيعي" ? Colors.green : Colors.red,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Text(
+                        message,
+                        textDirection: TextDirection.rtl,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

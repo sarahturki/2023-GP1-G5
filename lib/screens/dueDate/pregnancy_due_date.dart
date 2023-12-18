@@ -21,13 +21,7 @@ class _PregnancyDueDatePageState extends State<PregnancyDueDatePage> {
  
   String formatedDuedate = "";
  
-///////////////////////////////////////////////////////////// for sending info
 
-  ////////////////////////////////////////////////////
-  ///
-  ///
-  ///
-  ///
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +114,7 @@ class _PregnancyDueDatePageState extends State<PregnancyDueDatePage> {
                     ),
                   ],
                 ),
-      SizedBox(height: 30,)
+      const SizedBox(height: 30,)
       ,
                 SizedBox(
                   width: 300,

@@ -17,58 +17,43 @@ class FirebaseAuthHelper {
     try {
       showLoaderDialog(context);
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      
- ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('تم تسجيل دخولك بنجاح'  , 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold  ),
-  ) ,  backgroundColor: Colors.teal, 
-       ),
-       );
+
+      showMessage('تم تسجيل دخولك بنجاح');
 
       Navigator.of(context, rootNavigator: true).pop();
       return true;
-
-
-      
     } on FirebaseAuthException catch (error) {
       Navigator.of(context, rootNavigator: true).pop();
 
-
-
- if (error.code =="invalid-email"){
-
-ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('كلمة المرور او البريد الإلكتروني  خاطئة '   , 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold ),
-       ),
-       backgroundColor:Color.fromARGB(255, 155, 26, 17) ,
-        ) ) ;
-        } else{
-
-ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('كلمة المرور او البريد الإلكتروني  خاطئة '   , 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold ),
-       ), backgroundColor: Color.fromARGB(255, 155, 26, 17),
-        ) ) ;
-
-          
-        }
-
+      if (error.code == "invalid-email") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            'كلمة المرور او البريد الإلكتروني  خاطئة ',
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Color.fromARGB(255, 155, 26, 17),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            'كلمة المرور او البريد الإلكتروني  خاطئة ',
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Color.fromARGB(255, 155, 26, 17),
+        ));
+      }
 
       return false;
     }
   }
 
-
-
-
-
-
-
-
-
 ///////////////////////////////////////////////////////
-///
-///
-///
-///
+  ///
+  ///
+  ///
+  ///
   Future<bool> signUp(String name, String email, String password,
       BuildContext context, String lastName, DateTime selected) async {
     try {
@@ -85,80 +70,61 @@ ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('كلمة ا
       for (var element in hospitalBag) {
         await FirebaseFirestoreHelper.instance.addName(element, "hospitalBag");
       }
-ScaffoldMessenger.of(context).showSnackBar( SnackBar
-      ( content: Text('تم إنشاء الحساب بنجاح'
-      
-      , 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold ),
-      
-      ), 
-      
-      backgroundColor: Colors.teal
-      
-      ), );
-       
-             Navigator.of(context, rootNavigator: true).pop();
-      return true;
-    } on FirebaseAuthException catch (error) {
 
+      showMessage('تم إنشاء الحساب بنجاح');
 
       Navigator.of(context, rootNavigator: true).pop();
-    if (error.code == 'email-already-in-use') 
-      { ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: 
-      Text(' .  الحساب موجود بالفعل لهذا البريد الإلكتروني' 
-      , 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold ),
-      
-      
-      ),
-     backgroundColor: Color.fromARGB(255, 155, 26, 17) , 
-       ), 
-        ); }   else if  (error.code =="invalid-email"){
-
-ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text('صيغة البريد الإلكتروني  خاطئة '
-
-
-
-, 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold ),
-      ),
-      backgroundColor: Color.fromARGB(255, 155, 26, 17),
-       ),
+      return true;
+    } on FirebaseAuthException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop();
+      if (error.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              ' .  الحساب موجود بالفعل لهذا البريد الإلكتروني',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Color.fromARGB(255, 155, 26, 17),
+          ),
         );
-        }
+      } else if (error.code == "invalid-email") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'صيغة البريد الإلكتروني  خاطئة ',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Color.fromARGB(255, 155, 26, 17),
+          ),
+        );
+      } else if (error.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'كلمة المرور ضعيفة ',
+              textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Color.fromARGB(255, 155, 26, 17),
+          ),
+        );
+      }
 
-        else if (error.code == 'weak-password') { ScaffoldMessenger.of(context).showSnackBar( SnackBar
-      ( content: Text('كلمة المرور ضعيفة '
-      
-      , 
- textAlign: TextAlign.right, style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold ),
-      
-      
-      
-      ), 
-      
-      backgroundColor: Color.fromARGB(255, 155, 26, 17),
-      
-      ), ); }
-        
-        
-        
-            return false;
+      return false;
     }
   }
 
   Future<void> signOut() async {
     await _auth.signOut();
-
-
-
   }
 
   Future<bool> changePassword(String password, BuildContext context) async {
     try {
       showLoaderDialog(context);
       _auth.currentUser!.updatePassword(password);
-     
+
       Navigator.of(context, rootNavigator: true).pop();
       showMessage("تم تغيير كلمة السر");
       Navigator.of(context).pop();

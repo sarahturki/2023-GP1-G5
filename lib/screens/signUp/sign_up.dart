@@ -32,7 +32,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastnamecontroller = TextEditingController();
-  final TextEditingController _repeatpasswordconroller = TextEditingController();
+  final TextEditingController _repeatpasswordconroller =
+      TextEditingController();
   final TextEditingController _birthController = TextEditingController();
   DateTime? selectedDate;
 ////////////for password icon
@@ -95,7 +96,7 @@ class _SignUpState extends State<SignUp> {
     _birthController.dispose();
   }
 
-//////////////  format for dates 
+//////////////  format for dates
 
   String newDate = "";
   String formatedDuedate = "12/2/2020";
@@ -116,7 +117,7 @@ class _SignUpState extends State<SignUp> {
           },
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
-            color:  Color.fromARGB(205, 186, 11, 98),
+            color: Color.fromARGB(205, 186, 11, 98),
           ),
         ),
       ),
@@ -133,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                   height: 30,
                 ),
 
-//////////////////////////////////
+
 
                 SizedBox(
                   width: double.maxFinite,
@@ -163,10 +164,15 @@ class _SignUpState extends State<SignUp> {
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextFormField(
+
+                                            maxLength: 10 ,
+
                     controller: _nameController,
                     textInputAction: TextInputAction.next,
                     enableSuggestions: true,
                     decoration: InputDecoration(
+                                                                                                        counterText: "الحد الأقصى 10 حروف",
+
                       labelText: 'الاسم الأول  :',
                       labelStyle: const TextStyle(
                         fontWeight: FontWeight.bold,
@@ -204,9 +210,13 @@ class _SignUpState extends State<SignUp> {
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextFormField(
+                                            maxLength: 10 ,
+
                     controller: _lastnamecontroller,
                     enableSuggestions: true,
                     decoration: InputDecoration(
+                                                                                                        counterText: "الحد الأقصى 10 حروف",
+
                       labelText: 'الاسم الأخير :',
                       labelStyle: const TextStyle(
                         fontWeight: FontWeight.bold,
@@ -251,18 +261,19 @@ class _SignUpState extends State<SignUp> {
                     controller: _birthController,
                     enableSuggestions: true,
                     onTap: () async {
+                      int year = DateTime.now().year - 18;
                       DateTime? picked = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
+                          initialDate: DateTime(
+                              year, DateTime.now().month, DateTime.now().day),
                           //which date will display when user open the picker
                           firstDate: DateTime(1950),
                           //what will be the previous supported year in picker
-                          lastDate: DateTime.now());
+                          lastDate: DateTime(
+                              year, DateTime.now().month, DateTime.now().day));
 
                       if (picked != null) {
-                      
                         setState(() {
-                       
                           formatedDuedate =
                               intl.DateFormat('dd/MM/yyy').format(picked);
                           _birthController.text = formatedDuedate;
@@ -287,8 +298,6 @@ class _SignUpState extends State<SignUp> {
                         );
                       }
                     },
-
-                    
                     decoration: InputDecoration(
                       labelText: 'تاريخ الميلاد: ',
                       labelStyle: const TextStyle(
@@ -363,7 +372,6 @@ class _SignUpState extends State<SignUp> {
                 ),
 
                 const SizedBox(height: 16.0),
-
 
                 Directionality(
                   textDirection: TextDirection.rtl,
@@ -706,6 +714,4 @@ class _SignUpState extends State<SignUp> {
       }
     }
   }
-
- 
 }

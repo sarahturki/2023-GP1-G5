@@ -1,8 +1,12 @@
+import 'package:ammommyappgp/core/constants/firebase_firestore_helper.dart';
+import 'package:ammommyappgp/models/faq_model.dart';
 import 'package:ammommyappgp/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+
 class FrequentlyAskedQuestions extends StatelessWidget {
-  const FrequentlyAskedQuestions({super.key});
+  final int remainWeeks;
+  const FrequentlyAskedQuestions({super.key, required this.remainWeeks});
 
   @override
   Widget build(BuildContext context) {
@@ -10,61 +14,25 @@ class FrequentlyAskedQuestions extends StatelessWidget {
       appBar: CustomAppBar.getAppBar("اسئلة شائعة", context),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              FAQWidget(
-                subtitle:
-                    "في الشهر الثاني من الحمل، لا يمكن تحديد جنس الجنين بالطرق التقليدية المستخدمة في الفحوصات الطبية. عادةً ما يتم تحديد جنس الجنين بدقة أكبر في وقت لاحق من الحمل، عادةً خلال الشهور الرابع أو الخامس. ",
-                title: "هل يمكن تحديد جنس الجنين في الشهر الثاني من الحمل؟",
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              FAQWidget(
-                subtitle:
-                    "في الشهر الثاني من الحمل، لا يمكن تحديد جنس الجنين بالطرق التقليدية المستخدمة في الفحوصات الطبية. عادةً ما يتم تحديد جنس الجنين بدقة أكبر في وقت لاحق من الحمل، عادةً خلال الشهور الرابع أو الخامس. ",
-                title:
-                    "هل يمكن ممارسة التمارين الرياضية في الشهر الثاني من الحمل؟",
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              FAQWidget(
-                subtitle:
-                    "في الشهر الثاني من الحمل، لا يمكن تحديد جنس الجنين بالطرق التقليدية المستخدمة في الفحوصات الطبية. عادةً ما يتم تحديد جنس الجنين بدقة أكبر في وقت لاحق من الحمل، عادةً خلال الشهور الرابع أو الخامس. ",
-                title:
-                    "هل يمكن رؤية الجنين في الشهر الثاني من الحمل؟",
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              FAQWidget(
-                subtitle:
-                    "في الشهر الثاني من الحمل، لا يمكن تحديد جنس الجنين بالطرق التقليدية المستخدمة في الفحوصات الطبية. عادةً ما يتم تحديد جنس الجنين بدقة أكبر في وقت لاحق من الحمل، عادةً خلال الشهور الرابع أو الخامس. ",
-                title:
-                    "ما هي الأطعمة التي يجب تجنبها في الشهر الثاني من الحمل؟",
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              FAQWidget(
-                subtitle:
-                    "في الشهر الثاني من الحمل، لا يمكن تحديد جنس الجنين بالطرق التقليدية المستخدمة في الفحوصات الطبية. عادةً ما يتم تحديد جنس الجنين بدقة أكبر في وقت لاحق من الحمل، عادةً خلال الشهور الرابع أو الخامس. ",
-                title:
-                    "هل يمكن تناول الأدوية المسكنة للألم في الشهر الثاني من الحمل؟",
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              FAQWidget(
-                subtitle:
-                    "في الشهر الثاني من الحمل، لا يمكن تحديد جنس الجنين بالطرق التقليدية المستخدمة في الفحوصات الطبية. عادةً ما يتم تحديد جنس الجنين بدقة أكبر في وقت لاحق من الحمل، عادةً خلال الشهور الرابع أو الخامس. ",
-                title: "هل يمكن السفر في الشهر الثاني من الحمل؟",
-              ),
-            ],
-          ),
-        ),
+        child: FutureBuilder<List<FaqModel>>(
+            future: FirebaseFirestoreHelper.instance.getFaq(remainWeeks),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                // primary: false,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return FAQWidget(
+                      subtitle: snapshot.data![index].answer,
+                      title: snapshot.data![index].question);
+                },
+              );
+            }),
       ),
     );
   }
@@ -83,6 +51,8 @@ class FAQWidget extends StatelessWidget {
         // backgroundColor: Colors.red,
         // controller: controller,
         title: Text(
+          textAlign: TextAlign.right,
+          textDirection: TextDirection.rtl,
           title,
           style: const TextStyle(
             fontSize: 16,
@@ -95,6 +65,8 @@ class FAQWidget extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             child: Text(
               subtitle,
+              textAlign: TextAlign.right,
+              textDirection: TextDirection.rtl,
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,

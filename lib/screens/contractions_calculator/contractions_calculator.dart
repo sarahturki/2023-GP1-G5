@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:ammommyappgp/core/constants/constants.dart';
 import 'package:ammommyappgp/core/constants/firebase_firestore_helper.dart';
 import 'package:ammommyappgp/models/contractions_model.dart';
 import 'package:ammommyappgp/widgets/custom_appbar.dart';
 import 'package:ammommyappgp/widgets/primary_button.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ContractionsCalculator extends StatefulWidget {
   const ContractionsCalculator({super.key});
@@ -20,14 +22,19 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
   bool isFirstTime = true;
   int _counter = 0;
   ContractionsModel? contractionsModel;
+  bool ispressed = true;
+  List<ContractionsModel> conList = [];
+  bool isStart = false;
 
   Timer? _timer;
   List<ContractionsModel> list = [];
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _counter++;
-      });
+      if (mounted) {
+        setState(() {
+          _counter++;
+        });
+      }
     });
   }
 
@@ -39,7 +46,17 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
   }
 
   void stopTimer() {
-    _timer!.cancel();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    super.dispose();
   }
 
   @override
@@ -68,7 +85,6 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
               CustomTimer(
                 controller: _controller!,
                 builder: (state, time) {
-                  // Build the widget you want!🎉
                   return Center(
                     child: Text(
                       "${time.minutes}:${time.seconds}",
@@ -90,39 +106,54 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
               SizedBox(
                 width: 100,
                 child: PrimaryButton(
-                  onPressed: () async {
-                    if (_controller!.state.value == CustomTimerState.counting) {
-                      // print("HEHHHE")
-                      if (isFirstTime) {
-                        contractionsModel = ContractionsModel(
-                          durationContraction:
-                              "${_controller!.remaining.value.minutes}:${_controller!.remaining.value.seconds}",
-                          intervalContractions: "-",
-                        );
-                        isFirstTime = false;
-                      } else {
-                        contractionsModel = ContractionsModel(
-                          durationContraction:
-                              "${_controller!.remaining.value.minutes}:${_controller!.remaining.value.seconds}",
-                          intervalContractions: formatTime(_counter),
-                        );
-                      }
-                      await FirebaseFirestoreHelper.instance
-                          .addContractionsCalculator(contractionsModel!);
-                      _controller!.reset();
-                      _controller!.pause();
-                      startTimer();
-                    } else {
-                      _controller!.start();
-                      if (_timer != null) {
-                        stopTimer();
-                      }
-                    }
+                    onPressed: () async {
+                      if (_controller!.state.value ==
+                          CustomTimerState.counting) {
+                        // print("HEHHHE")
+                        if (isFirstTime == true) {
+                          contractionsModel = ContractionsModel(
+                            timestamp: DateTime.now(),
+                            durationContraction:
+                                "${_controller!.remaining.value.minutes}:${_controller!.remaining.value.seconds}",
+                            intervalContractions: "-",
+                          );
+                          isFirstTime = false;
+                        } else {
+                          contractionsModel = ContractionsModel(
+                            timestamp: DateTime.now(),
+                            durationContraction:
+                                "${_controller!.remaining.value.minutes}:${_controller!.remaining.value.seconds}",
+                            intervalContractions: formatTime(_counter),
+                          );
+                        }
+                        _controller!.reset();
+                        _controller!.pause();
+                        _counter = 0;
+                        await FirebaseFirestoreHelper.instance
+                            .addContractionsCalculator(contractionsModel!);
 
-                    setState(() {});
-                  },
-                  title: "يبدأ",
-                ),
+                        startTimer();
+                        setState(() {
+                          ispressed = true;
+                        });
+                      } else {
+                        _controller!.start();
+                    setState(() {
+                          ispressed = false;
+                        });
+                        if (_timer != null) {
+                          stopTimer();
+                        }
+                      }
+
+                    
+                    },
+                    title: ispressed ? "أبدأ" : "قف"),
+              ),
+              const Text(
+                "  عزيزتي الام يجب ملاحظة المدة بين الانقباضات بعناية وذلك لمعرفة دخول وقت المخاض حيث تكون مدة الانقباضات دقيقه واحده و الفاصل بين الانقباضات من 3 الى 5 دقائق لمدة ساعة",
+                style: TextStyle(fontSize: 19.0),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(
                 height: 24.0,
@@ -175,14 +206,14 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
                           } else if (snapshot.data!.isEmpty ||
                               snapshot.data == null) {
                             return const Center(
-                              child: Text("No Data Found"),
+                              child: Text("لا يوجد بيانات حالية"),
                             );
                           }
-                          List<ContractionsModel> conList =
-                              snapshot.data!.reversed.toList();
+                          conList = snapshot.data!.reversed.toList();
                           return ListView.builder(
                             shrinkWrap: true,
-                            itemCount:conList.length,
+                            primary: false,
+                            itemCount: conList.length,
                             itemBuilder: (context, index) {
                               ContractionsModel contractionsModel =
                                   conList[index];
@@ -194,15 +225,32 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Text(
-                                        contractionsModel.intervalContractions,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                        ),
+                                      child: Row(
+                                        children: [
+                                          Tooltip(
+                                              message: DateFormat.yMEd()
+                                                  .add_jms()
+                                                  .format(contractionsModel
+                                                      .timestamp),
+                                              child: const Icon(
+                                                  Icons.timer_outlined)),
+                                          const SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              contractionsModel
+                                                  .intervalContractions,
+                                              style: const TextStyle(
+                                                  // fontSize: 18,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 4,
+                                      flex: 3,
                                       child: CircleAvatar(
                                         radius: 22,
                                         backgroundColor:
@@ -218,8 +266,8 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
                                       child: Text(
                                         contractionsModel.durationContraction,
                                         style: const TextStyle(
-                                          fontSize: 20,
-                                        ),
+                                            // fontSize: 20,
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -238,12 +286,21 @@ class _ContractionsCalculatorState extends State<ContractionsCalculator>
                 width: 100,
                 child: PrimaryButton(
                     onPressed: () async {
+                      _counter = 0;
+                      isFirstTime = true;
+                      _controller!.reset();
+                      if (conList.isEmpty) {
+                        showMessage("Nothing to remove");
+                        return;
+                      }
+                      _controller!.pause();
+                      stopTimer();
                       await FirebaseFirestoreHelper.instance.clearContraction();
-
+                      setState(() {});
                       // print(formatTime(_counter));
                     },
-                    title: "واضح"),
-              ),
+                    title: "إعادة"),
+              )
             ],
           ),
         ),

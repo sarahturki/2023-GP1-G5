@@ -4,6 +4,7 @@ import 'package:ammommyappgp/models/weekly_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+
 List<String> arabicNumber = [
   "١",
   "٢",
@@ -49,7 +50,7 @@ List<String> arabicNumber = [
 void showMessage(String message) {
   Fluttertoast.showToast(
     msg: message,
-    backgroundColor: Colors.red,
+    backgroundColor: Color.fromARGB(255, 255, 255, 255),
     textColor: Colors.white,
     fontSize: 16.0,
   );
@@ -255,7 +256,10 @@ List<Todo> hospitalBag = [
     uid: "6",
   ),
 ];
-bool loginVaildation(String email, String password , ) {
+bool loginVaildation(
+  String email,
+  String password,
+) {
   if (email.isEmpty && password.isEmpty) {
     showMessage("تأكد من ادخال كلا من الايميل وكلمة السر");
     return false;
@@ -274,9 +278,32 @@ UserModel? userData;
 
 int? remainWeeks, remainDays;
 
-
 List<WeeklyInfo> weeklyInfo = [];
 
 WeeklyInfo? currentWeeklyInfo;
 
 // List<Map<String,dynamic>> weeklyInfo/
+
+int getMonth(int day) {
+  if (day <= 4) {
+    return 1;
+  } else if (day > 4 && day <= 8) {
+    return 2;
+  } else if (day > 8 && day <= 12) {
+    return 3;
+  } else if (day > 12 && day <= 16) {
+    return 4;
+  } else if (day > 16 && day <= 20) {
+    return 5;
+  } else if (day > 20 && day <= 24) {
+    return 6;
+  } else if (day > 24 && day <= 28) {
+    return 7;
+  } else if (day > 28 && day <= 32) {
+    return 8;
+  } else if (day > 32 && day <= 36) {
+    return 9;
+  } else {
+    return 9;
+  }
+}

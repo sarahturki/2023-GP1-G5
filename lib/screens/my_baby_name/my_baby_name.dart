@@ -46,7 +46,7 @@ class MyBabyName extends StatelessWidget {
                           showMessage("الرجاء أدخال الاسم");
                         } else {
                           Todo todo = Todo(
-                              completed: false, name: newTitle, uid: "213");
+                              completed: true, name: newTitle, uid: "213");
                           FirebaseFirestoreHelper.instance
                               .addName(todo, "addName");
                           Navigator.of(context).pop();

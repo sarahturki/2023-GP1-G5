@@ -24,6 +24,7 @@ class VitalInformationView extends StatelessWidget {
           }
           return Column(
             children: [
+              const SizedBox(height: 24.0,),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: snapshot.data!.length,
@@ -92,7 +93,45 @@ class SingleVitalInfoWidget extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () async {
-                    await FirebaseFirestoreHelper.instance.deleteReport(id);
+                    Widget cancelButton = TextButton(
+                      child: const Text("تراجع"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                    Widget continueButton = TextButton(
+                      child: const Text("حذف"),
+                      onPressed: () {
+
+
+                                            FirebaseFirestoreHelper.instance.deleteReport(id);
+                        Navigator.of(context).pop();
+
+                      },
+                    );
+
+                    AlertDialog alert = AlertDialog(
+                      title: const Text(
+                        " حذف المعلومات الحيوية",
+                        textAlign: TextAlign.right,
+                      ),
+                      content: const Text(
+                        "هل أنتي متأكدة؟",
+                        textAlign: TextAlign.right,
+                      ),
+                      actions: [
+                        cancelButton,
+                        continueButton,
+                      ],
+                    );
+
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return alert;
+                      },
+                    );
+
                   },
                   icon: const Icon(
                     Icons.delete,

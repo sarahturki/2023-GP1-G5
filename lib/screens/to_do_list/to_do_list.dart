@@ -27,17 +27,19 @@ class _ToDoListState extends State<ToDoList> {
               builder: (context) {
                 String newTitle = '';
                 return AlertDialog(
-                  title: const Text('إضافة مهمة' ,textAlign: TextAlign.right,),
+                  title: const Text(
+                    'إضافة مهمة',
+                    textAlign: TextAlign.right,
+                  ),
                   content: TextField(
-                     textDirection: TextDirection.rtl,
+                    textDirection: TextDirection.rtl,
                     autofocus: true,
                     onChanged: (value) {
                       newTitle = value;
                     },
-                    decoration:
-                        const InputDecoration(
-                          hintTextDirection: TextDirection.rtl,
-                          hintText: 'اضيفي مهامك هنا'),
+                    decoration: const InputDecoration(
+                        hintTextDirection: TextDirection.rtl,
+                        hintText: 'اضيفي مهامك هنا'),
                   ),
                   actions: <Widget>[
                     TextButton(
@@ -64,7 +66,6 @@ class _ToDoListState extends State<ToDoList> {
         },
         child: const Icon(Icons.add),
       ),
-   
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: StreamBuilder(
@@ -73,12 +74,23 @@ class _ToDoListState extends State<ToDoList> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-            return snapshot.data == null || snapshot.data!.isEmpty
+            final sortedTasks = List.from(snapshot.data!);
+            sortedTasks.sort((a, b) {
+              if (a.completed && !b.completed) {
+                return 1; // a should come after b
+              } else if (!a.completed && b.completed) {
+                return -1; // a should come before b
+              } else {
+                return 0; // no change in order
+              }
+            });
+            return sortedTasks.isEmpty
                 ? const Center(
                     child: Text("لا توجد مهام حالية"),
                   )
                 : ListView.builder(
-                    itemCount: snapshot.data!.length,
+                    primary: false,
+                    itemCount: sortedTasks.length,
                     itemBuilder: (context, index) {
                       return CustomListTile(
                         onDelete: () {
@@ -93,21 +105,27 @@ class _ToDoListState extends State<ToDoList> {
                             onPressed: () {
                               FirebaseFirestoreHelper.instance
                                   .daleteNameCompletion(
-                                      snapshot.data![index], "todos");
+                                      sortedTasks[index], "todos");
                               Navigator.of(context).pop();
                             },
                           );
-      
+
                           // set up the AlertDialog
                           AlertDialog alert = AlertDialog(
-                            title: const Text("حذف المهمة" ,textAlign: TextAlign.right,),
-                            content: const Text("هل أنتي متأكدة؟" , textAlign: TextAlign.right,),
+                            title: const Text(
+                              "حذف المهمة",
+                              textAlign: TextAlign.right,
+                            ),
+                            content: const Text(
+                              "هل أنتي متأكدة؟",
+                              textAlign: TextAlign.right,
+                            ),
                             actions: [
                               cancelButton,
                               continueButton,
                             ],
                           );
-      
+
                           // show the dialog
                           showDialog(
                             context: context,
@@ -122,16 +140,19 @@ class _ToDoListState extends State<ToDoList> {
                               builder: (context) {
                                 String newTitle = '';
                                 return AlertDialog(
-                                  title: const Text('تعديل المهمة' , textAlign: TextAlign.right,),
+                                  title: const Text(
+                                    'تعديل المهمة',
+                                    textAlign: TextAlign.right,
+                                  ),
                                   content: TextField(
-                                     textDirection: TextDirection.rtl,
+                                    textDirection: TextDirection.rtl,
                                     autofocus: true,
                                     onChanged: (value) {
                                       newTitle = value;
                                     },
                                     decoration: InputDecoration(
-                                      hintTextDirection: TextDirection.rtl,
-                                        hintText: snapshot.data![index].name),
+                                        hintTextDirection: TextDirection.rtl,
+                                        hintText: sortedTasks[index].name),
                                   ),
                                   actions: <Widget>[
                                     TextButton(
@@ -140,20 +161,22 @@ class _ToDoListState extends State<ToDoList> {
                                           Navigator.of(context).pop(),
                                     ),
                                     TextButton(
-                                      child: const Text('تعديل' ,),
+                                      child: const Text(
+                                        'تعديل',
+                                      ),
                                       onPressed: () async {
                                         if (newTitle == "") {
                                           showMessage("الرجاء إدخال المهمة");
                                         } else {
                                           Todo todo = Todo(
-                                              completed:
-                                                  snapshot.data![index].completed,
+                                              completed: snapshot
+                                                  .data![index].completed,
                                               name: newTitle,
-                                              uid: snapshot.data![index].uid);
+                                              uid: sortedTasks[index].uid);
                                           await FirebaseFirestoreHelper.instance
                                               .updateNameCompletion(
                                                   todo, "todos");
-      
+
                                           Navigator.of(context).pop();
                                           setState(() {});
                                         }
@@ -163,15 +186,20 @@ class _ToDoListState extends State<ToDoList> {
                                 );
                               });
                         },
-                        title: snapshot.data![index].name,
+                        title: sortedTasks[index].name,
                         onChanged: (value) async {
-                          snapshot.data![index].completed = value!;
+                          sortedTasks[index].completed = value!;
+
+                          Todo todo = Todo(
+                              completed: sortedTasks[index].completed,
+                              name: sortedTasks[index].name,
+                              uid: sortedTasks[index].uid);
                           await FirebaseFirestoreHelper.instance
-                              .updateTodoCompletion(snapshot.data![index],
-                                  snapshot.data![index].completed);
+                              .updateTodoCompletion(
+                                  todo, sortedTasks[index].completed);
                           setState(() {});
                         },
-                        value: snapshot.data![index].completed,
+                        value: sortedTasks[index].completed,
                       );
                     },
                   );

@@ -33,7 +33,7 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.getAppBar( title.text , context),
+      appBar: CustomAppBar.getAppBar(title.text, context),
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -42,6 +42,8 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
               child: Column(
                 children: [
                   TableCalendar(
+                      headerStyle: const HeaderStyle(
+                            formatButtonVisible: false, titleCentered: true),
                     calendarStyle: CalendarStyle(
                       todayDecoration: BoxDecoration(
                         color: const Color(0xffE187B0).withOpacity(0.5),
@@ -68,11 +70,7 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
 
                       setState(() {});
                     },
-                    // calendarController: _calendarController,
-                    // Customize the calendar appearance and behavior as needed.
-                    // For example, you can set properties like initialCalendarFormat,
-                    // availableCalendarFormats, headerStyle, calendarStyle, etc.
-                    // Check the documentation for all customization options.
+                 
                   ),
                   const SizedBox(
                     height: 24.0,
@@ -88,7 +86,7 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
                             textInputAction: TextInputAction.next,
                             enableSuggestions: true,
                             decoration: InputDecoration(
-                              labelText: "عنوان الموعد" ,
+                              labelText: "الموعد",
                               labelStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -111,7 +109,7 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'الرجاء ادخال الاسم الأول ';
+                                return 'الرجاء ادخال   ';
                               }
                               return null;
                             },
@@ -128,7 +126,7 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
                             textInputAction: TextInputAction.next,
                             enableSuggestions: true,
                             decoration: InputDecoration(
-                              labelText: "اسال الدكتور عن موعد الولادة",
+                              labelText: "ملاحظات",
                               labelStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -151,7 +149,7 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'الرجاء ادخال الاسم الأول ';
+                                return 'الرجاء ادخال ';
                               }
                               return null;
                             },
@@ -164,8 +162,8 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
                           width: 250,
                           child: PrimaryButton(
                             onPressed: () async {
-                              if (title.text.isNotEmpty &&
-                                  subtitle.text.isNotEmpty) {
+                              if (title.text.isNotEmpty 
+                                  ) {
                                 AppointmentsModel appointmentsModel =
                                     AppointmentsModel(
                                         title: title.text,
@@ -179,19 +177,19 @@ class _CalendarScreenEditState extends State<CalendarScreenEdit> {
                                     .instance
                                     .updateAppointment(appointmentsModel);
                                 if (isSuccess) {
-                                  showMessage("Successfully Update");
+                                  showMessage("تم التغيير بنجاح");
                                   title.clear();
                                   subtitle.clear();
                                   // ignore: use_build_context_synchronously
                                   Navigator.of(context).pop();
                                 } else {
-                                  showMessage("Failed");
+                                  showMessage("فشلت عملية التعديل");
                                 }
                                 isLoading = false;
 
                                 setState(() {});
                               } else {
-                                showMessage("Please Fill the details");
+                                showMessage("الرجاء ادخال التفاصيل");
                               }
                             },
                             title: "تعديل",

@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'core/constants/firebase_auth_helper.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -37,16 +38,66 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       routes: AppRoutes.routes,
-      // home: const ContractionsCalculator(),
+      // home: const WeightCalculator(),
       home: StreamBuilder(
           stream: FirebaseAuthHelper.instance.getAuthChange,
           builder: (context, snapshot) {
-
             if (snapshot.hasData) {
               return const SplashScreen(ishome: true);
             }
             return const SplashScreen(ishome: false);
           }),
+    );
+  }
+}
+
+class WeightCalculator extends StatelessWidget {
+  final int firstWeekWeight = 50;
+  final int secondWeekWeight = 65;
+  final int thirdWeekWeight = 32;
+
+  const WeightCalculator({super.key});
+
+  int calculateDifference(int initialWeight, int finalWeight) {
+    return finalWeight - initialWeight;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int firstSecondDifference =
+        calculateDifference(firstWeekWeight, secondWeekWeight);
+    int firstThirdDifference =
+        calculateDifference(firstWeekWeight, thirdWeekWeight);
+
+    int totalGainLoss = firstSecondDifference - firstThirdDifference;
+
+    String resultText = totalGainLoss > 0
+        ? 'Total gain of $totalGainLoss kg'
+        : totalGainLoss < 0
+            ? 'Total loss of ${totalGainLoss.abs()} kg'
+            : 'No change in weight';
+
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'First week - second week: $firstSecondDifference kg',
+              style: const TextStyle(fontSize: 20),
+            ),
+            Text(
+              'First week - third week: $firstThirdDifference kg',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Answer: $resultText',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

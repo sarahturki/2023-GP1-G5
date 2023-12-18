@@ -28,7 +28,6 @@ class _CustomListTileState extends State<CustomListTile> {
           side: const BorderSide(color: Colors.grey, width: 1),
           borderRadius: BorderRadius.circular(5),
         ),
-        // trailing: §,
         trailing: Wrap(
           spacing: 12, // space between two icons
           children: <Widget>[
@@ -38,7 +37,7 @@ class _CustomListTileState extends State<CustomListTile> {
             ),
             IconButton(
               onPressed: widget.onDelete,
-              icon: const Icon(Icons.delete) ,color:  Color.fromARGB(205, 162, 33, 33),
+              icon: const Icon(Icons.delete) ,color:  const Color.fromARGB(205, 162, 33, 33),
             ),
          
           ],

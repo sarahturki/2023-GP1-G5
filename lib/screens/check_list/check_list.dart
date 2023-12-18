@@ -17,6 +17,8 @@ import '../home/home_page.dart';
 import '../profile_screen/profile_screen.dart';
 import '../welcome_screen/welcome_screen.dart';
 
+int selectedWeekOfDetails = 0;
+
 class CheckList extends StatefulWidget {
   const CheckList({super.key});
 
@@ -49,67 +51,93 @@ class _CheckListState extends State<CheckList> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    height: 230,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(50),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(50),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 50),
-                          child: Text(
-                            "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 36),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 50),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "أنتي في الأسبوع ${arabicNumber[remainWeeks! - 1]}",
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 24),
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: const Offset(0, 100),
-                          child: SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              itemCount: 40,
-                              shrinkWrap: true,
-                              reverse: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                int indexCount = index + 1;
-
-                                return dateCustom(
-                                  title: "أسبوع",
-                                  subtitle: arabicNumber[index].toString(),
-                                  textColor: indexCount == remainWeeks
-                                      ? Colors.white
-                                      : Colors.black,
-                                  color: indexCount == remainWeeks
-                                      ? const Color(0xffD66095)
-                                      : Colors.white,
-                                );
-                              },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 36),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(right: 40),
+                            child: Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                "أنتي في الأسبوع  ${arabicNumber[remainWeeks! - 1]}",
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 24),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.090,
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Transform.translate(
+                      offset: const Offset(0, 0),
+                      child: SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          itemCount: 40,
+                          shrinkWrap: true,
+                          reverse: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            int indexCount = index + 1;
+
+                            return GestureDetector(
+                              onTap: () {
+                                currentWeeklyInfo = weeklyInfo
+                                    .where((element) =>
+                                        element.week == indexCount.toString())
+                                    .first;
+
+                                setState(() {
+                                  selectedWeekOfDetails = indexCount;
+                                });
+                              },
+                              child: dateCustom(
+                                title: "الأسبوع",
+                                subtitle: arabicNumber[index].toString(),
+                                textColor: indexCount == remainWeeks
+                                    ? Colors.white
+                                    : Colors.black,
+                                isSelected: indexCount != remainWeeks &&
+                                    selectedWeekOfDetails == indexCount,
+                                color: indexCount == remainWeeks
+                                    ? const Color(0xffD66095)
+                                    : Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +193,8 @@ class _CheckListState extends State<CheckList> {
                       SingleItemOfCheckList(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ArticleScreen(),
+                            builder: (context) => ArticleScreen(
+                                remainWeeks: selectedWeekOfDetails),
                           ));
                         },
                         title: "المقالات",
@@ -176,8 +205,8 @@ class _CheckListState extends State<CheckList> {
                       SingleItemOfCheckList(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                const FrequentlyAskedQuestions(),
+                            builder: (context) => FrequentlyAskedQuestions(
+                                remainWeeks: selectedWeekOfDetails),
                           ));
                         },
                         title: "الأسئلة الشائعة",
@@ -204,32 +233,52 @@ class _CheckListState extends State<CheckList> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          newMo.firstName + newMo.lastName,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                    padding: const EdgeInsets.only(top: 30, right: 5),
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${newMo.firstName} ${newMo.lastName}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          newMo.email,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            newMo.email,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                    child: Image.asset("assets/logo-removebg-preview 4.png"))
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 250,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/img_group56.png'),
+                        alignment: Alignment.center,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    child: Container(
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/img_logoremovebgpreview_293x252.png'),
+                                fit: BoxFit.contain))),
+                  ),
+                )
               ],
             ),
           ),
@@ -270,32 +319,6 @@ class _CheckListState extends State<CheckList> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    Text(
-                      "التذكيرات",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Icon(
-                      Icons.notifications,
-                      size: 30,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           Padding(
@@ -308,6 +331,12 @@ class _CheckListState extends State<CheckList> {
                       builder: (context) => const WelcomeScreen(),
                     ),
                     (route) => false);
+                setState(() async {
+                                          await Future.delayed(const Duration(seconds:2 ));
+
+                  currentWeeklyInfo = null;
+                  selectedWeekOfDetails = 0;
+                });
                 showMessage("تم تسجيل الخروج بنجاح");
               },
               title: "تسجيل الخروج",
@@ -333,32 +362,19 @@ class SingleItemOfCheckList extends StatelessWidget {
       onPressed: onPressed,
       child: Container(
         height: 190,
-        width: 190,
+        width: 180,
         margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadiusStyle.roundedBorder28,
           gradient: LinearGradient(
             begin: Alignment.centerRight,
             end: Alignment.centerLeft,
-
-            // begin: const Alignment(
-            //   -0.04,
-            //   -0.83,
-            // ),
-            // end: const Alignment(
-            //   0.8,
-            //   1.68,
-            // ),
             colors: [
               ColorConstant.pinkA100Ba,
               ColorConstant.red50,
             ],
           ),
         ),
-        // decoration: AppDecoration.outlineIndigoA70033.copyWith(
-        //   borderRadius: BorderRadiusStyle.roundedBorder28,
-
-        // ),
         child: Center(
             child: Text(
           title,

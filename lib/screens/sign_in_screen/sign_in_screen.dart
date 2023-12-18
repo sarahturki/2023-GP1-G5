@@ -201,6 +201,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       bool isVaildated = loginVaildation(
                           _emailController.text, _passwordController.text);
                       if (isVaildated) {
+                        print("I am Here");
                         bool isLogined = await FirebaseAuthHelper.instance
                             .login(_emailController.text,
                                 _passwordController.text, context);

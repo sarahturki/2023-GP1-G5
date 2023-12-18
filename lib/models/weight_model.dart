@@ -1,5 +1,5 @@
 class WeightModel {
-  final String id;
+   String id;
   String weight;
   WeightModel({required this.id, required this.weight});
   Map<String, dynamic> toJson() {

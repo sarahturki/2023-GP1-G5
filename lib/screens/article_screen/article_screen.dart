@@ -1,9 +1,12 @@
+import 'package:ammommyappgp/core/constants/firebase_firestore_helper.dart';
+import 'package:ammommyappgp/models/article_model.dart';
 import 'package:ammommyappgp/screens/article_details_screen/article_details_screen.dart';
 import 'package:ammommyappgp/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class ArticleScreen extends StatelessWidget {
-  const ArticleScreen({super.key});
+  final int remainWeeks;
+  const ArticleScreen({super.key, required this.remainWeeks});
 
   @override
   Widget build(BuildContext context) {
@@ -11,39 +14,41 @@ class ArticleScreen extends StatelessWidget {
       appBar: CustomAppBar.getAppBar("مقالات", context),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              ArticleWidget(),
-              SizedBox(
-                height: 12.0,
-              ),
-              ArticleWidget(),
-              SizedBox(
-                height: 12.0,
-              ),
-              ArticleWidget(),
-              SizedBox(
-                height: 12.0,
-              ),
-              ArticleWidget(),
-            ],
-          ),
-        ),
+        child: FutureBuilder<List<ArticleModel>>(
+            future: FirebaseFirestoreHelper.instance.getArticle(remainWeeks),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                // primary: false,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ArticleWidget(
+                    articleModel: snapshot.data![index],
+                  );
+                },
+              );
+            }),
       ),
     );
   }
 }
 
 class ArticleWidget extends StatelessWidget {
-  const ArticleWidget({super.key});
+  final ArticleModel articleModel;
+  const ArticleWidget({super.key, required this.articleModel});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const ArticleDetailsScreen(),
+          builder: (context) =>
+              ArticleDetailsScreen(articleModel: articleModel),
         ));
       },
       child: Card(
@@ -56,10 +61,11 @@ class ArticleWidget extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(12),
-                child: const Text(
-                  "تفاصيل الشهر الخامس من الحمل.. التغيرات والاحتياطات",
+                child: Text(
+                  articleModel.title,
                   textAlign: TextAlign.right,
-                  style: TextStyle(
+                  textDirection: TextDirection.rtl,
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
@@ -69,13 +75,14 @@ class ArticleWidget extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                color: Colors.red,
-                child: const Image(
+                color: const Color.fromARGB(255, 255, 255, 255),
+                child: Image(
                   height: 150,
                   fit: BoxFit.cover,
                   // width: 100,
                   image: NetworkImage(
-                      "https://marionhealth.org/wp-content/uploads/2018/04/ThinkstockPhotos-835757744.jpg"),
+                    articleModel.image,
+                  ),
                 ),
               ),
             ),

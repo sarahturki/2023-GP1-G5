@@ -9,19 +9,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../check_list/check_list.dart';
+
 Widget dateCustom(
     {Color? color = Colors.white,
     required String title,
     Color? textColor = Colors.black,
+    required bool isSelected,
     required String subtitle}) {
   return Container(
     height: 100,
     width: 60,
     margin: const EdgeInsets.symmetric(horizontal: 8),
     decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: const Color.fromARGB(255, 250, 179, 207).withOpacity(0.2),
+          spreadRadius: 5,
+          blurRadius: 7,
+        ),
+      ],
       border: Border.all(
-        color: const Color.fromARGB(255, 250, 179, 207),
-        width: 1,
+        color: isSelected
+            ? const Color.fromARGB(255, 166, 13, 97)
+            : const Color.fromARGB(255, 250, 179, 207),
+        width: isSelected ? 4.0 : 1,
       ),
       color: color!,
       borderRadius: BorderRadius.circular(10),
@@ -52,22 +64,27 @@ Widget dateCustom(
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  static final GlobalKey<HomePageState> homePageKey =
+      GlobalKey<HomePageState>();
+
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    String week = currentWeeklyInfo!.forMother;
+    String week = currentWeeklyInfo == null ? "" : currentWeeklyInfo!.forMother;
 
     String displayText = week.replaceAll('\\n', '\n');
 
-    String weekforbaby = currentWeeklyInfo!.forBaby;
+    String weekforbaby =
+        currentWeeklyInfo == null ? "" : currentWeeklyInfo!.forBaby;
 
     String forbaby = weekforbaby.replaceAll('\\n', '\n');
 
-    String weektitle = currentWeeklyInfo!.title;
+    String weektitle =
+        currentWeeklyInfo == null ? "" : currentWeeklyInfo!.title;
 
     String titlesss = weektitle.replaceAll('\\n', '\n');
 
@@ -77,7 +94,7 @@ class _HomePageState extends State<HomePage> {
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .snapshots()
             .map((event) => UserModel.fromJson(event.data()!)),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<UserModel> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -89,88 +106,97 @@ class _HomePageState extends State<HomePage> {
               elevation: 0.0,
               iconTheme: const IconThemeData(color: Colors.white),
             ),
-            endDrawer: customDraver(context,snapshot.data!),
+            endDrawer: customDraver(context, snapshot.data!),
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    height: 230,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(50),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(50),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 50),
-                          child: Text(
-                            "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 36),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 50),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "أنتي في الأسبوع  ${arabicNumber[remainWeeks! - 1]}",
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 24),
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: const Offset(0, 100),
-                          child: SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              itemCount: 40,
-                              shrinkWrap: true,
-                              reverse: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                int indexCount = index + 1;
-                                /////////////////////////////////////////////////////////////////////////////////////////
-                                ///
-                                ///
-                                ///
-                                ///
-                                ///
-                                /// weeks view
-                                return GestureDetector(
-                                  onTap: () {
-                                    currentWeeklyInfo = weeklyInfo
-                                        .where((element) =>
-                                            element.week ==
-                                            indexCount.toString())
-                                        .first;
-
-                                    setState(() {});
-                                  },
-                                  child: dateCustom(
-                                    title: "الأسبوع",
-                                    subtitle: arabicNumber[index].toString(),
-                                    textColor: indexCount == remainWeeks
-                                        ? Colors.white
-                                        : Colors.black,
-                                    color: indexCount == remainWeeks
-                                        ? const Color(0xffD66095)
-                                        : Colors.white,
-                                  ),
-                                );
-                              },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 36),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(right: 40),
+                            child: Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                "أنتي في الأسبوع  ${arabicNumber[remainWeeks! - 1]}",
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 24),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Transform.translate(
+                      offset: const Offset(0, 0),
+                      child: SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          itemCount: 40,
+                          shrinkWrap: true,
+                          reverse: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            int indexCount = index + 1;
+
+                            return GestureDetector(
+                              onTap: () {
+                                currentWeeklyInfo = weeklyInfo
+                                    .where((element) =>
+                                        element.week == indexCount.toString())
+                                    .first;
+
+                                setState(() {
+                                  selectedWeekOfDetails = indexCount;
+                                });
+                              },
+                              child: dateCustom(
+                                title: "الأسبوع",
+                                subtitle: arabicNumber[index].toString(),
+                                textColor: indexCount == remainWeeks
+                                    ? Colors.white
+                                    : Colors.black,
+                                isSelected: indexCount != remainWeeks &&
+                                    selectedWeekOfDetails == indexCount,
+                                color: indexCount == remainWeeks
+                                    ? const Color(0xffD66095)
+                                    : Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
                   ),
                   Column(
                     children: [
@@ -195,7 +221,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             CircleAvatar(
                               radius: 45,
-                              backgroundColor: const Color(0xffFFCDD2),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 247, 247, 247),
                               child: Image.asset(currentWeeklyInfo!.image),
                               //////////////////////////////////////////////////////////
                             ),
@@ -255,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Container(
                     height: 60,
-                    margin: const EdgeInsets.only(top: 15, right: 10),
+                    margin: const EdgeInsets.only(top: 15),
                     color: Theme.of(context).primaryColor,
                     child: const Center(
                         child: Text(
@@ -390,7 +417,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Widget customDraver(context,UserModel newMo) {
+  Widget customDraver(context, UserModel newMo) {
     return Drawer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -403,32 +430,52 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          newMo.firstName + newMo.lastName,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                    padding: const EdgeInsets.only(top: 30, right: 5),
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${newMo.firstName} ${newMo.lastName}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          newMo.email,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            newMo.email,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                    child: Image.asset("assets/logo-removebg-preview 4.png"))
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 250,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/img_group56.png'),
+                        alignment: Alignment.center,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    child: Container(
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/img_logoremovebgpreview_293x252.png'),
+                                fit: BoxFit.contain))),
+                  ),
+                )
               ],
             ),
           ),
@@ -469,44 +516,28 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    Text(
-                      "التذكيرات",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Icon(
-                      Icons.notifications,
-                      size: 30,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(20),
             child: PrimaryButton(
               onPressed: () async {
+
+               
                 await FirebaseAuthHelper.instance.signOut();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const WelcomeScreen(),
                     ),
                     (route) => false);
+                setState(() async {
+
+
+                        await Future.delayed(const Duration(seconds:2 ));
+
+                  currentWeeklyInfo = null ;
+                  selectedWeekOfDetails = 0;
+                });
                 showMessage("تم تسجيل الخروج بنجاح");
               },
               title: "تسجيل الخروج",

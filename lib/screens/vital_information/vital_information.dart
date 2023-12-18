@@ -42,10 +42,14 @@ class _VitalInformationState extends State<VitalInformation> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
+                                                maxLength: 8 ,
+
                         controller: bloodsuger,
                         textInputAction: TextInputAction.next,
                         enableSuggestions: true,
                         decoration: InputDecoration(
+                                                                              counterText: "الحد الأقصى 8 ارقام",
+
                           labelText: "ادخلي سكر الدم",
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -69,7 +73,7 @@ class _VitalInformationState extends State<VitalInformation> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الرجاء ادخال الاسم الأول ';
+                            return 'الرجاء ادخال ';
                           }
                           return null;
                         },
@@ -81,10 +85,14 @@ class _VitalInformationState extends State<VitalInformation> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
+                                                maxLength: 8 ,
+
                         controller: bloodpressure,
                         textInputAction: TextInputAction.next,
                         enableSuggestions: true,
                         decoration: InputDecoration(
+                                                                              counterText: "الحد الأقصى 8 ارقام",
+
                           labelText: "ادخلي ضغط الدم ",
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -108,7 +116,7 @@ class _VitalInformationState extends State<VitalInformation> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الرجاء ادخال الاسم الأول ';
+                            return 'الرجاء ادخال ';
                           }
                           return null;
                         },
@@ -120,10 +128,14 @@ class _VitalInformationState extends State<VitalInformation> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
+                                                maxLength: 8 ,
+
                         controller: weight,
                         textInputAction: TextInputAction.next,
                         enableSuggestions: true,
                         decoration: InputDecoration(
+                                                                              counterText: "الحد الأقصى 8 ارقام",
+
                           labelText: "ادخلي الوزن",
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -147,7 +159,7 @@ class _VitalInformationState extends State<VitalInformation> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الرجاء ادخال الاسم الأول ';
+                            return 'الرجاء ادخال ';
                           }
                           return null;
                         },
@@ -159,10 +171,14 @@ class _VitalInformationState extends State<VitalInformation> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
+                                                maxLength: 8 ,
+
                         controller: vitaminD,
                         textInputAction: TextInputAction.next,
                         enableSuggestions: true,
                         decoration: InputDecoration(
+                                                                              counterText: "الحد الأقصى 8 ارقام",
+
                           labelText: "ادخلي مستوى فيتامين D",
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -186,7 +202,7 @@ class _VitalInformationState extends State<VitalInformation> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الرجاء ادخال الاسم الأول ';
+                            return 'الرجاء ادخال ';
                           }
                           return null;
                         },
@@ -198,10 +214,14 @@ class _VitalInformationState extends State<VitalInformation> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
+                                                maxLength: 8 ,
+
                         controller: calcium,
                         textInputAction: TextInputAction.next,
                         enableSuggestions: true,
                         decoration: InputDecoration(
+                                                                              counterText: "الحد الأقصى 8 ارقام",
+
                           labelText: "ادخلي مستوى الكالسيوم",
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -225,7 +245,7 @@ class _VitalInformationState extends State<VitalInformation> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الرجاء ادخال الاسم الأول ';
+                            return 'الرجاء ادخال ';
                           }
                           return null;
                         },
@@ -237,10 +257,15 @@ class _VitalInformationState extends State<VitalInformation> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
+                                                maxLength: 8 ,
+
+                        
                         controller: hemoglobin,
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.done,
                         enableSuggestions: true,
                         decoration: InputDecoration(
+                                                                              counterText: "الحد الأقصى 8 ارقام",
+
                           labelText: "ادخلي مستوى الهيموجلوبين",
                           labelStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -264,7 +289,7 @@ class _VitalInformationState extends State<VitalInformation> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الرجاء ادخال الاسم الأول ';
+                            return 'الرجاء ادخال ';
                           }
                           return null;
                         },
@@ -302,7 +327,7 @@ class _VitalInformationState extends State<VitalInformation> {
                             if (isSuccess) {
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).pop();
-                              showMessage("Successfully Added");
+                              showMessage("تمت اضافتها بنجاح");
                               bloodsuger.clear();
                               bloodpressure.clear();
                               weight.clear();
@@ -310,13 +335,13 @@ class _VitalInformationState extends State<VitalInformation> {
                               calcium.clear();
                               hemoglobin.clear();
                             } else {
-                              showMessage("Failed");
+                              showMessage("فشلت عملية الإضافة");
                             }
                             isLoading = false;
 
                             setState(() {});
                           } else {
-                            showMessage("Please Fill the details");
+                            showMessage("الرجاء ادخال التفاصيل");
                           }
                         },
                         title: "اضافة",
