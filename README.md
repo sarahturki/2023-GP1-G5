@@ -2,7 +2,7 @@
 # maternal App
 
 <p align="center">
-<img  align= alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/assets/130418270/c6590285-2ea9-4557-9938-50b8c39d3adc" width=50%/>
+<img  align= alt="maternal App logo" src="https://github.com/sarahturki/2023-GP1-G5/blob/master/assets/Picture1.png" width=30%/>
 </p>
 
 
@@ -11,6 +11,8 @@
 - [introduction](#introduction)
 - [Programming languages ](#Programming-languages )
 - [Application structure](#project-structure)
+- [launching instructions](#launching-instructions)
+
 
 
 
@@ -57,7 +59,13 @@ To run the mobile application, you need the following
 <ol  >
   <li>Import the code in VS</li>
   <li> Run the code</li>
-  <li>Run the code</li>
+  
+</ol>
+<p>• or you can use these steps to run the code</p>
+
+<ol  >
+  <li>open this path build\app\outputs\flutter-apk\app-release.apk</li>
+  <li> Download the APK file on your device or emulator </li>
   
 </ol>
 
