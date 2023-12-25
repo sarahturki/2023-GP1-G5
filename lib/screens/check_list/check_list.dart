@@ -27,6 +27,14 @@ class CheckList extends StatefulWidget {
 }
 
 class _CheckListState extends State<CheckList> {
+
+  @override
+  void initState() {
+   setState(() {
+     selectedWeekOfDetails=remainWeeks!;
+   });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<UserModel>(

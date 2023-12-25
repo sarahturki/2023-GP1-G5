@@ -522,22 +522,15 @@ class HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(20),
             child: PrimaryButton(
               onPressed: () async {
-
-               
                 await FirebaseAuthHelper.instance.signOut();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const WelcomeScreen(),
                     ),
                     (route) => false);
-                setState(() async {
-
-
-                        await Future.delayed(const Duration(seconds:2 ));
-
-                  currentWeeklyInfo = null ;
+                await Future.delayed(const Duration(seconds: 2));
+                  currentWeeklyInfo = null;
                   selectedWeekOfDetails = 0;
-                });
                 showMessage("تم تسجيل الخروج بنجاح");
               },
               title: "تسجيل الخروج",
